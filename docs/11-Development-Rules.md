@@ -18,10 +18,10 @@ This document establishes the strict rules of engagement for developers working 
 
 ## 2. Coding Standards
 
-### 2.1 Typescript Rigidity
-- **No `any`:** The use of `any` is strictly prohibited. Use `unknown` if a type is truly dynamic, and type-narrow it.
-- **Interfaces vs Types:** Use `interface` for object definitions and contract blueprints. Use `type` for unions, intersections, and aliases.
-- **Strict Mode:** `tsconfig.json` `strict: true` must remain enabled.
+### 2.1 JavaScript Rigidity
+- **JSDoc Types:** Use JSDoc to document parameters and return types for critical functions, ensuring IDE auto-complete.
+- **Strict Mode:** Ensure `"use strict";` is implied or explicitly used. Avoid implicit global variables.
+- **ES6+ Features:** Use modern syntax (let/const, arrow functions, destructuring) consistently.
 
 ### 2.2 Error Handling
 - **Backend:** 

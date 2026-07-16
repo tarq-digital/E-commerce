@@ -99,7 +99,7 @@ This version focuses strictly on core e-commerce functionalities required for a 
 
 ## 13. Project Constraints
 - **Hosting:** Deployment is restricted to Hostinger Business Node.js Hosting. Architecture must account for VPS limitations compared to auto-scaling serverless environments.
-- **Technology Stack:** Strictly Next.js, Express, MySQL, Prisma, Tailwind CSS, shadcn/ui. No deviations to other frameworks (e.g., NestJS, MongoDB) are permitted.
+- **Technology Stack:** Strictly Next.js, Express, MySQL, Prisma, CSS Modules, Global CSS. No deviations to other frameworks (e.g., NestJS, MongoDB, Tailwind) are permitted.
 
 ## 14. Acceptance Criteria
 - [ ] Users can successfully register, log in, and manage their profile.

@@ -6,7 +6,7 @@ This document outlines the MySQL database schema, designed to be managed and que
 
 ## 1. Database Philosophy
 - **RDBMS Choice:** MySQL is chosen for its strict ACID compliance, ensuring reliability in transactional data (e.g., payments and inventory).
-- **ORM Choice:** Prisma provides type-safe queries and automated schema migrations, perfectly aligning with our TypeScript backend.
+- **ORM Choice:** Prisma provides safe queries and automated schema migrations, perfectly aligning with our JavaScript backend.
 - **Naming Conventions:** 
   - Tables: `snake_case`, pluralized (e.g., `users`, `order_items`).
   - Columns: `snake_case` (e.g., `first_name`, `created_at`).

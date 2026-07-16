@@ -48,7 +48,7 @@ apps/frontend/
 ├── .env.example        # Next.js environment template (NEXT_PUBLIC_...)
 ├── next.config.mjs     # Webpack, redirect, and image domain configs
 ├── package.json
-├── tailwind.config.js  # Theme tokens referencing globals.css variables
+├── postcss.config.js   # PostCSS configuration
 └── tsconfig.json       # Path aliases (@/*) and strict types
 ```
 
@@ -69,14 +69,14 @@ apps/frontend/src/app/
 ├── (checkout)/         # Checkout flow
 │   ├── layout.tsx      # Secure checkout layout
 │   └── checkout/       # /checkout
-└── globals.css         # Tailwind directives and CSS variables
+└── globals.css         # Global CSS variables and resets
 ```
 
 ### C. Component Architecture (`src/components/`)
 Components are strictly categorized by domain.
 ```text
 apps/frontend/src/components/
-├── ui/                 # shadcn/ui generic primitives (Button, Input, Modal)
+├── ui/                 # Custom reusable primitives (Button, Input, Modal)
 ├── layout/             # Structural components (Navbar, Footer, Sidebar)
 ├── features/           # Complex, domain-specific components
 │   ├── product/        # ProductCard, ImageGallery, ReviewStars
@@ -92,7 +92,7 @@ apps/frontend/src/
 ├── services/           # API interaction layer (Axios wrappers, strict types)
 │   ├── auth.service.ts
 │   └── api.ts          # Base Axios instance with interceptors
-├── lib/                # Third-party initializations (utils.ts for tailwind-merge)
+├── lib/                # Third-party initializations
 └── constants/          # Static data (ROUTES, ERROR_MESSAGES)
 ```
 
@@ -146,5 +146,5 @@ apps/backend/src/
 ## 5. Agency Reusability & Naming Conventions
 To ensure this boilerplate can be reused for future clients:
 - **No Hardcoded Brand Names:** "Weebster" should never appear in UI components or error messages. Use `NEXT_PUBLIC_APP_NAME` from `.env`.
-- **Theme Segregation:** All branding (colors, fonts, logos) must live exclusively in `globals.css`, `tailwind.config.js`, and the `public/` directory. Business logic must never reference specific brand colors.
+- **Theme Segregation:** All branding (colors, fonts, logos) must live exclusively in `globals.css` and the `public/` directory. Business logic must never reference specific brand colors.
 - **Naming Conventions:** Folders in `src/` must be `kebab-case`. Files exporting React components must be `PascalCase`. Files exporting utilities or services must be `camelCase`.

@@ -153,4 +153,4 @@ This document details the architectural layout, behavior, and design requirement
 ### Global Architectural Notes
 - **Sticky Actions:** On mobile, primary actions (Add to Cart, Checkout, Apply Filter) must *always* be fixed to the bottom of the screen for thumb accessibility.
 - **Data Fetching:** Pages rely on Next.js Server Components for initial fast loads and SEO, falling back to Client Components only where interactive state (like Cart or Filters) is required.
-- **Shadcn UI:** All components are built upon Shadcn UI primitives, ensuring high accessibility (Radix UI) and consistent styling via Tailwind CSS.
+- **Custom UI:** All components are custom built with CSS Modules to ensure a tailored, premium aesthetic without the overhead or design constraints of utility-first frameworks.

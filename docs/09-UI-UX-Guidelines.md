@@ -47,7 +47,7 @@ The vast majority of traffic will be mobile. The mobile experience must never fe
 
 ## 6. Accessibility (a11y)
 - **Contrast Ratio:** All text must meet WCAG AA standards (4.5:1 contrast ratio against its background). No light gray text on white backgrounds.
-- **Focus Rings:** Keyboard navigation must be supported. Focus rings (outlines) must *never* be disabled via CSS (`outline: none`) unless replaced by a custom, highly visible focus state (e.g., Tailwind `focus:ring-2`).
+- **Focus Rings:** Keyboard navigation must be supported. Focus rings (outlines) must *never* be disabled via CSS (`outline: none`) unless replaced by a custom, highly visible focus state (e.g., custom `box-shadow` ring).
 - **Screen Readers:** All non-decorative images must have descriptive `alt` text. Icon-only buttons (like a trash can) must have an invisible `.sr-only` label or `aria-label`.
 
 ## 7. Consistency Rules

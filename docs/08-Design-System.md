@@ -1,6 +1,6 @@
 # Design System - Weebster
 
-This document defines the strict visual language and UI components for the Weebster platform. All frontend development must utilize these predefined tokens via Tailwind CSS and Shadcn UI. No custom CSS should be written unless absolutely necessary.
+This document defines the strict visual language and UI components for the Weebster platform. All frontend development must utilize these predefined tokens via Custom CSS Modules and CSS Variables.
 
 ---
 
@@ -34,12 +34,12 @@ All colors are defined as HSL variables in `globals.css` to support seamless Dar
   - Bold (700) - Main page headers.
 
 ## 4. Spacing & Grid System
-- **Scale:** Tailwind's default spacing scale (base 4px) is strictly enforced (e.g., `p-4` = 16px, `mb-8` = 32px).
+- **Scale:** A standard 4px spacing scale is strictly enforced (e.g., `--space-4` = 16px, `--space-8` = 32px).
 - **Grid Container:**
   - Max width: `1280px` (Desktop).
   - Paddings: Mobile `px-4` (16px), Tablet `px-8` (32px), Desktop `px-12` (48px).
 
-## 5. UI Component Library (via shadcn/ui)
+## 5. UI Component Library
 
 ### Buttons
 - **Primary:** Solid Deep Navy, white text. No border.

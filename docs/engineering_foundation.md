@@ -17,7 +17,7 @@ weebster/
 ├── packages/
 │   ├── config/         # Shared configurations (ESLint, Prettier, TSConfig)
 │   ├── ui/             # Shared UI components (future-proofing for mobile/admin)
-│   └── types/          # Shared TypeScript interfaces & types
+│   └── types/          # Shared JSDoc types & schemas
 ├── docs/               # Project documentation (Architecture, API, Setup)
 ├── scripts/            # Automation and CI/CD scripts
 ├── .github/            # GitHub Actions workflows and issue templates
@@ -27,7 +27,7 @@ weebster/
 ```
 
 ### Rationale & Scalability
-- **Code Sharing**: A monorepo allows sharing validation schemas, TypeScript interfaces, and configurations between the frontend and backend, ensuring absolute consistency.
+- **Code Sharing**: A monorepo allows sharing validation schemas, constants, and configurations between the frontend and backend, ensuring absolute consistency.
 - **Atomic Commits**: Features requiring both frontend and backend changes can be committed and reviewed in a single PR.
 - **Future Scalability**: Adding an `admin-dashboard` or a `mobile-app` (React Native) in the future is seamless within the `apps/` directory, reusing the `packages/ui` and `packages/types`.
 
@@ -54,7 +54,7 @@ frontend/
 │   ├── constants/      # App-wide constants (Routes, Action types)
 │   ├── styles/         # Global CSS and CSS Modules
 │   ├── utils/          # Pure helper functions (formatting, validation)
-│   ├── types/          # Frontend-specific TypeScript types
+│   ├── types/          # Frontend-specific JSDoc types
 │   ├── providers/      # Wrapping components (ThemeProvider, AuthProvider)
 │   └── middlewares/    # Next.js edge middlewares (Route protection)
 ├── public/             # Static assets (images, fonts, icons)
@@ -155,7 +155,7 @@ Strict separation of environments ensures security and predictable deployments.
 
 ## 6. Configuration Files
 
-- **ESLint**: Configured for strict TypeScript and React rules. Prevents unused variables, enforces dependency arrays in hooks, and maintains code quality.
+- **ESLint**: Configured for strict JavaScript and React rules. Prevents unused variables, enforces dependency arrays in hooks, and maintains code quality.
 - **Prettier**: Enforces consistent formatting (tabs vs spaces, line length = 100, trailing commas).
 - **EditorConfig**: Ensures consistent IDE behavior across developers (line endings = LF, charset = utf-8).
 - **VSCode Settings (`.vscode/settings.json`)**: Auto-format on save, organize imports on save.
@@ -398,7 +398,7 @@ weebster-monorepo/
 
 ### 1. Monorepo vs Polyrepo
 - **Decision**: Monorepo (npm workspaces).
-- **Why**: Allows enforcing uniform linting rules and sharing TypeScript interfaces between frontend and backend.
+- **Why**: Allows enforcing uniform linting rules and sharing validation logic between frontend and backend.
 - **Trade-offs**: Slightly larger initial setup time; CI/CD pipelines require intelligent caching to avoid rebuilding unchanged apps.
 
 ### 2. Next.js App Router vs Pages Router
