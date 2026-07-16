@@ -1,4 +1,7 @@
-const { DEFAULT_PAGINATION_LIMIT, MAX_PAGINATION_LIMIT } = require('../constants/application');
+const {
+  DEFAULT_PAGINATION_LIMIT,
+  MAX_PAGINATION_LIMIT,
+} = require("../constants/application");
 
 const getPaginationParams = (query) => {
   const page = parseInt(query.page, 10) || 1;
@@ -23,7 +26,7 @@ const formatPaginationMeta = (total, page, limit) => {
       total_pages: totalPages,
       has_next_page: page < totalPages,
       has_prev_page: page > 1,
-    }
+    },
   };
 };
 

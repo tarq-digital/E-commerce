@@ -1,6 +1,6 @@
 /**
  * Wrapper for async functions to pass errors to the global error handler
- * @param {Function} fn 
+ * @param {Function} fn
  * @returns {Function} Express middleware function
  */
 const catchAsync = (fn) => (req, res, next) => {

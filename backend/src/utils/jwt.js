@@ -1,13 +1,15 @@
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const jwtConfig = require('../config/jwt');
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const jwtConfig = require("../config/jwt");
 
 /**
  * Generates an Access Token containing user details and the session ID.
  * The session_id is critical for instantaneous revocation checks.
  */
 const generateAccessToken = (payload) => {
-  return jwt.sign(payload, jwtConfig.accessSecret, { expiresIn: jwtConfig.accessExpiresIn });
+  return jwt.sign(payload, jwtConfig.accessSecret, {
+    expiresIn: jwtConfig.accessExpiresIn,
+  });
 };
 
 /**
@@ -15,11 +17,11 @@ const generateAccessToken = (payload) => {
  * This prevents the refresh token from being decoded by the client and is securely hashed in the DB.
  */
 const generateOpaqueRefreshToken = () => {
-  return crypto.randomBytes(40).toString('hex');
+  return crypto.randomBytes(40).toString("hex");
 };
 
 const hashToken = (token) => {
-  return crypto.createHash('sha256').update(token).digest('hex');
+  return crypto.createHash("sha256").update(token).digest("hex");
 };
 
 const verifyAccessToken = (token) => {
@@ -28,7 +30,7 @@ const verifyAccessToken = (token) => {
 
 // Generates short-lived verification tokens for email/password reset
 const generateVerificationToken = () => {
-  return crypto.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString("hex");
 };
 
 module.exports = {
@@ -36,5 +38,5 @@ module.exports = {
   generateOpaqueRefreshToken,
   hashToken,
   verifyAccessToken,
-  generateVerificationToken
+  generateVerificationToken,
 };

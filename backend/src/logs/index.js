@@ -1,6 +1,6 @@
-const winston = require('winston');
-const fs = require('fs');
-const loggerConfig = require('../config/logger');
+const winston = require("winston");
+const fs = require("fs");
+const loggerConfig = require("../config/logger");
 
 // Ensure log directory exists
 if (!fs.existsSync(loggerConfig.directory)) {
@@ -9,13 +9,13 @@ if (!fs.existsSync(loggerConfig.directory)) {
 
 // Define log format
 const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
   winston.format.errors({ stack: true }),
   winston.format.splat(),
-  winston.format.json()
+  winston.format.json(),
 );
 
-const createTransports = (filename, level = 'info') => {
+const createTransports = (filename, level = "info") => {
   return new winston.transports.File({
     filename,
     level,
@@ -27,10 +27,10 @@ const createTransports = (filename, level = 'info') => {
 const logger = winston.createLogger({
   level: loggerConfig.level,
   format: logFormat,
-  defaultMeta: { service: 'weebster-api' },
+  defaultMeta: { service: "weebster-api" },
   transports: [
     createTransports(loggerConfig.files.app),
-    createTransports(loggerConfig.files.error, 'error'),
+    createTransports(loggerConfig.files.error, "error"),
   ],
 });
 
@@ -42,7 +42,7 @@ const requestLogger = winston.createLogger({
 
 const securityLogger = winston.createLogger({
   format: logFormat,
-  transports: [createTransports(loggerConfig.files.security, 'warn')],
+  transports: [createTransports(loggerConfig.files.security, "warn")],
 });
 
 const auditLogger = winston.createLogger({
@@ -51,13 +51,15 @@ const auditLogger = winston.createLogger({
 });
 
 // If we're not in production then log to the `console`
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple()
-    )
-  }));
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple(),
+      ),
+    }),
+  );
 }
 
 module.exports = {

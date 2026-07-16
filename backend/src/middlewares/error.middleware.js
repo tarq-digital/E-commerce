@@ -1,12 +1,18 @@
-const { logger } = require('../logs');
-const ApiError = require('../utils/api-error');
-const appConfig = require('../config/app');
-const httpStatus = require('../constants/http-status');
-const messages = require('../constants/messages');
+const { logger } = require("../logs");
+const ApiError = require("../utils/api-error");
+const appConfig = require("../config/app");
+const httpStatus = require("../constants/http-status");
+const messages = require("../constants/messages");
 
 // 404 Handler
 const notFoundHandler = (req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, messages.ERROR_NOT_FOUND, 'ROUTE_NOT_FOUND'));
+  next(
+    new ApiError(
+      httpStatus.NOT_FOUND,
+      messages.ERROR_NOT_FOUND,
+      "ROUTE_NOT_FOUND",
+    ),
+  );
 };
 
 // Global Error Handler
@@ -16,8 +22,8 @@ const globalErrorHandler = (err, req, res, next) => {
   if (!(err instanceof ApiError)) {
     statusCode = statusCode || httpStatus.INTERNAL_SERVER_ERROR;
     message = err.message || messages.ERROR_SERVER;
-    errorCode = 'INTERNAL_ERROR';
-    
+    errorCode = "INTERNAL_ERROR";
+
     // Log unexpected errors
     logger.error(`[UNHANDLED ERROR] ${err.stack}`);
   } else {
@@ -41,7 +47,7 @@ const globalErrorHandler = (err, req, res, next) => {
   if (appConfig.isDevelopment) {
     response.stack = err.stack;
   }
-  
+
   // Include validation details if provided by Joi middleware
   if (err.details) {
     response.details = err.details;

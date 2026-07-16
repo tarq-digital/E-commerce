@@ -1,5 +1,5 @@
-const ApiError = require('../utils/api-error');
-const httpStatus = require('../constants/http-status');
+const ApiError = require("../utils/api-error");
+const httpStatus = require("../constants/http-status");
 
 const validate = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body, {
@@ -9,14 +9,14 @@ const validate = (schema) => (req, res, next) => {
 
   if (error) {
     const errorDetails = error.details.map((detail) => ({
-      field: detail.path.join('.'),
-      message: detail.message.replace(/"/g, ''),
+      field: detail.path.join("."),
+      message: detail.message.replace(/"/g, ""),
     }));
 
     const apiError = new ApiError(
       httpStatus.BAD_REQUEST,
-      'Validation failed. Please check your inputs.',
-      'VALIDATION_ERROR'
+      "Validation failed. Please check your inputs.",
+      "VALIDATION_ERROR",
     );
     apiError.details = errorDetails;
     return next(apiError);

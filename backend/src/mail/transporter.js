@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
-const mailConfig = require('../config/mail');
-const { logger } = require('../logs');
+const nodemailer = require("nodemailer");
+const mailConfig = require("../config/mail");
+const { logger } = require("../logs");
 
 const transporter = nodemailer.createTransport({
   host: mailConfig.host,
@@ -14,9 +14,9 @@ const transporter = nodemailer.createTransport({
 // Verify connection
 transporter.verify((error) => {
   if (error) {
-    logger.warn('Email Transporter verification failed:', error);
+    logger.warn("Email Transporter verification failed:", error);
   } else {
-    logger.info('Email Transporter ready to send messages');
+    logger.info("Email Transporter ready to send messages");
   }
 });
 

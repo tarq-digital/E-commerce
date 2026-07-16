@@ -1,0 +1,11 @@
+{"level":"warn","message":"[API ERROR 404] The requested resource was not found. - /api/v1/admin/categories","service":"weebster-api","timestamp":"2026-07-16 17:10:34"}
+{"level":"warn","message":"[API ERROR 409] Email already in use - /api/v1/auth/register","service":"weebster-api","timestamp":"2026-07-16 17:10:34"}
+{"level":"warn","message":"[API ERROR 404] The requested resource was not found. - /api/v1/admin/categories","service":"weebster-api","timestamp":"2026-07-16 17:10:34"}
+{"level":"warn","message":"[API ERROR 404] The requested resource was not found. - /api/v1/admin/categories?limit=5&page=1","service":"weebster-api","timestamp":"2026-07-16 17:10:34"}
+{"level":"warn","message":"[API ERROR 401] Invalid credentials - /api/v1/auth/login","service":"weebster-api","timestamp":"2026-07-16 17:10:34"}
+{"level":"warn","message":"[API ERROR 409] Email already in use - /api/v1/auth/register","service":"weebster-api","timestamp":"2026-07-16 17:34:56"}
+{"level":"warn","message":"[API ERROR 401] Invalid credentials - /api/v1/auth/login","service":"weebster-api","timestamp":"2026-07-16 17:34:56"}
+{"level":"warn","message":"[API ERROR 409] Email already in use - /api/v1/auth/register","service":"weebster-api","timestamp":"2026-07-16 17:41:02"}
+{"level":"warn","message":"[API ERROR 401] Invalid credentials - /api/v1/auth/login","service":"weebster-api","timestamp":"2026-07-16 17:41:02"}
+{"level":"warn","message":"[API ERROR 409] Email already in use - /api/v1/auth/register","service":"weebster-api","timestamp":"2026-07-16 17:47:47"}
+{"level":"warn","message":"[API ERROR 401] Invalid credentials - /api/v1/auth/login","service":"weebster-api","timestamp":"2026-07-16 17:47:47"}

@@ -1,9 +1,9 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
-const origins = process.env.CORS_ORIGINS 
-  ? process.env.CORS_ORIGINS.split(',').map(o => o.trim())
-  : ['http://localhost:3000'];
+const origins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
+  : ["http://localhost:3000"];
 
 const corsConfig = {
   origin: function (origin, callback) {
@@ -16,8 +16,8 @@ const corsConfig = {
     return callback(null, true);
   },
   credentials: true, // Required for HttpOnly cookies
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 module.exports = corsConfig;

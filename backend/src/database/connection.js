@@ -1,18 +1,10 @@
-const mysql = require('mysql2/promise');
-const dbConfig = require('../config/database');
-const { logger } = require('../logs');
+const mysql = require("mysql2/promise");
+const dbConfig = require("../config/database");
+const { logger } = require("../logs");
 
 const pool = mysql.createPool(dbConfig);
 
-// Health check and initialization
-pool.getConnection()
-  .then((connection) => {
-    logger.info('✅ Database connection established successfully.');
-    connection.release();
-  })
-  .catch((err) => {
-    logger.error('❌ Failed to connect to database:', err);
-    process.exit(1);
-  });
+// Database connection verification should only happen during server startup (server.js),
+// not automatically when the module is imported. This prevents Jest/app.js from crashing.
 
 module.exports = pool;

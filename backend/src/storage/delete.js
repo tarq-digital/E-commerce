@@ -1,4 +1,4 @@
-const { cloudinary } = require('./upload');
+const { cloudinary } = require("./upload");
 
 const deleteFromCloudinary = async (publicId) => {
   return new Promise((resolve, reject) => {

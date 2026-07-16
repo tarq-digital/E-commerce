@@ -1,7 +1,7 @@
-const transporter = require('../transporter');
-const mailConfig = require('../../config/mail');
-const { logger } = require('../../logs');
-const templates = require('../templates');
+const transporter = require("../mail/transporter");
+const mailConfig = require("../config/mail");
+const { logger } = require("../logs");
+const templates = require("../mail/templates");
 
 class EmailService {
   async sendEmail(to, subject, html) {
@@ -22,22 +22,22 @@ class EmailService {
 
   async sendWelcome(user) {
     const html = templates.getWelcomeTemplate(user.first_name);
-    return this.sendEmail(user.email, 'Welcome to Weebster! 🎉', html);
+    return this.sendEmail(user.email, "Welcome to Weebster! 🎉", html);
   }
 
   async sendVerification(user, tokenUrl) {
     const html = templates.getVerifyEmailTemplate(user.first_name, tokenUrl);
-    return this.sendEmail(user.email, 'Verify your Email Address', html);
+    return this.sendEmail(user.email, "Verify your Email Address", html);
   }
 
   async sendPasswordReset(user, tokenUrl) {
     const html = templates.getForgotPasswordTemplate(user.first_name, tokenUrl);
-    return this.sendEmail(user.email, 'Password Reset Request', html);
+    return this.sendEmail(user.email, "Password Reset Request", html);
   }
 
   async sendPasswordChangedAlert(user) {
     const html = templates.getPasswordChangedTemplate(user.first_name);
-    return this.sendEmail(user.email, 'Security Alert: Password Changed', html);
+    return this.sendEmail(user.email, "Security Alert: Password Changed", html);
   }
 }
 

@@ -1,10 +1,16 @@
 class ApiError extends Error {
-  constructor(statusCode, message, errorCode = 'INTERNAL_ERROR', isOperational = true, stack = '') {
+  constructor(
+    statusCode,
+    message,
+    errorCode = "INTERNAL_ERROR",
+    isOperational = true,
+    stack = "",
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.errorCode = errorCode;
     this.isOperational = isOperational;
-    
+
     if (stack) {
       this.stack = stack;
     } else {

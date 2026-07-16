@@ -1,8 +1,8 @@
 module.exports = {
-  APP_NAME: 'Weebster API',
-  COMPANY_NAME: 'Weebster Toys',
-  DEFAULT_LANGUAGE: 'en',
-  CURRENCY: 'INR',
+  APP_NAME: "Weebster API",
+  COMPANY_NAME: "Weebster Toys",
+  DEFAULT_LANGUAGE: "en",
+  CURRENCY: "INR",
   DEFAULT_PAGINATION_LIMIT: 20,
   MAX_PAGINATION_LIMIT: 100,
 };

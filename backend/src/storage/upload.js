@@ -1,5 +1,5 @@
-const cloudinary = require('cloudinary').v2;
-const cloudinaryConfig = require('../config/cloudinary');
+const cloudinary = require("cloudinary").v2;
+const cloudinaryConfig = require("../config/cloudinary");
 
 cloudinary.config({
   cloud_name: cloudinaryConfig.cloudName,
@@ -16,10 +16,13 @@ const uploadToCloudinary = (fileBuffer, folder, filename = null) => {
     const options = { folder };
     if (filename) options.public_id = filename;
 
-    const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
-      if (error) reject(error);
-      else resolve(result);
-    });
+    const uploadStream = cloudinary.uploader.upload_stream(
+      options,
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      },
+    );
 
     uploadStream.end(fileBuffer);
   });
