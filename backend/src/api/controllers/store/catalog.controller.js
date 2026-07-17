@@ -97,6 +97,22 @@ const getProductBySlug = catchAsync(async (req, res) => {
   let product = await ProductService.getProductBySlug(slug); 
   if (product) {
     product = mapProduct(product);
+
+    // Fetch related products (from the same category)
+    if (product.category && product.category.id) {
+      const related = await ProductService.getProducts({ 
+        category_id: product.category.id,
+        status: 'PUBLISHED',
+        limit: 5 // Fetch 5 just in case one is the current product
+      });
+      
+      product.related_products = (related.data || [])
+        .filter(p => p.id !== product.id)
+        .slice(0, 4)
+        .map(mapProduct);
+    } else {
+      product.related_products = [];
+    }
   }
   sendSuccess(res, httpStatus.OK, 'Product retrieved', { product });
 });

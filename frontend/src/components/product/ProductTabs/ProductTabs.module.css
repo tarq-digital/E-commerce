@@ -1,0 +1,98 @@
+.tabsContainer {
+  margin-top: 60px;
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+}
+
+.tabHeaders {
+  display: flex;
+  gap: 32px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabHeaders::-webkit-scrollbar {
+  display: none;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  padding: 12px 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: var(--foreground);
+}
+
+.activeTab {
+  color: var(--foreground);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.tabContent {
+  padding: 32px 0;
+}
+
+.panel {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.descriptionText {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+  max-width: 800px;
+}
+
+.specsTable {
+  width: 100%;
+  max-width: 600px;
+  border-collapse: collapse;
+}
+
+.specsTable th, .specsTable td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.specsTable th {
+  width: 40%;
+  font-weight: 600;
+  color: var(--foreground);
+  background-color: var(--surface);
+}
+
+.specsTable td {
+  color: var(--muted-foreground);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .tabsContainer {
+    margin-top: 40px;
+    padding-top: 32px;
+  }
+  
+  .tabHeaders {
+    gap: 20px;
+  }
+  
+  .tabBtn {
+    font-size: 1rem;
+  }
+}

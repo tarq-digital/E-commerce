@@ -1,89 +1,124 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import styles from './ProductGallery.module.css';
 import { cn } from '../../../utils/cn';
+import { ImageZoom } from './ImageZoom';
 import { getProductImage } from '../../../utils/image';
 
-export const ProductGallery = ({ images, productName, hasDiscount, discountPercent }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollRef = useRef(null);
+const variants = {
+  enter: (direction) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.95
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+    scale: 1
+  },
+  exit: (direction) => ({
+    zIndex: 0,
+    x: direction < 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.95
+  })
+};
 
-  // If there are no images, provide a placeholder
+export const ProductGallery = ({ images, productName, hasDiscount, discountPercent }) => {
+  const [[page, direction], setPage] = useState([0, 0]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Fallback to placeholder if no images exist
   const galleryImages = images && images.length > 0 
     ? images 
     : [getProductImage(null)];
 
-  const scrollToIndex = (index) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        left: index * scrollRef.current.clientWidth,
-        behavior: 'smooth'
-      });
-      setCurrentIndex(index);
-    }
+  const imageIndex = Math.abs(page % galleryImages.length);
+
+  const paginate = (newDirection) => {
+    setPage([page + newDirection, newDirection]);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const index = Math.round(scrollRef.current.scrollLeft / scrollRef.current.clientWidth);
-        setCurrentIndex(index);
-      }
-    };
-    const ref = scrollRef.current;
-    ref?.addEventListener('scroll', handleScroll, { passive: true });
-    return () => ref?.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div className={styles.galleryContainer}>
-      {/* Main Swipeable Area */}
+    <div className={cn(styles.galleryContainer, isFullscreen && styles.fullscreen)}>
+      
+      {/* Main Image View */}
       <div className={styles.mainView}>
-        {hasDiscount && (
+        {hasDiscount && !isFullscreen && (
           <span className={styles.discountBadge}>-{discountPercent}%</span>
         )}
-        
-        <div className={cn(styles.slider, "no-scrollbar")} ref={scrollRef}>
-          {galleryImages.map((src, idx) => (
-            <div key={idx} className={styles.slide}>
-              <Image 
-                src={src}
-                alt={`${productName} image ${idx + 1}`}
-                fill
-                priority={idx === 0}
-                className={styles.mainImage}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+
+        <button 
+           className={styles.fullscreenBtn} 
+           onClick={() => setIsFullscreen(!isFullscreen)}
+           aria-label={isFullscreen ? "Close Fullscreen" : "Toggle Fullscreen"}
+        >
+          <Maximize2 size={20} />
+        </button>
+
+        <div className={styles.slider}>
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={page}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+                scale: { duration: 0.2 }
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = Math.abs(offset.x) * velocity.x;
+                if (swipe < -10000) {
+                  paginate(1);
+                } else if (swipe > 10000) {
+                  paginate(-1);
+                }
+              }}
+              className={styles.slide}
+            >
+              <ImageZoom 
+                src={galleryImages[imageIndex]} 
+                alt={`${productName} image ${imageIndex + 1}`} 
+                priority={true} 
               />
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Mobile dots indicator */}
-        <div className={styles.dots}>
-          {galleryImages.map((_, idx) => (
-            <button 
-              key={idx}
-              className={cn(styles.dot, currentIndex === idx && styles.activeDot)}
-              onClick={() => scrollToIndex(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
+        {galleryImages.length > 1 && (
+          <>
+            <button className={cn(styles.navBtn, styles.navPrev)} onClick={() => paginate(-1)}>
+              <ChevronLeft size={24} />
+            </button>
+            <button className={cn(styles.navBtn, styles.navNext)} onClick={() => paginate(1)}>
+              <ChevronRight size={24} />
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Desktop Thumbnails */}
+      {/* Thumbnails Strip */}
       {galleryImages.length > 1 && (
         <div className={styles.thumbnails}>
           {galleryImages.map((src, idx) => (
-            <button 
+            <button
               key={idx}
-              className={cn(styles.thumbnailWrapper, currentIndex === idx && styles.activeThumbnail)}
-              onClick={() => scrollToIndex(idx)}
+              className={cn(styles.thumbnailWrapper, imageIndex === idx && styles.activeThumbnail)}
+              onClick={() => setPage([idx, idx > imageIndex ? 1 : -1])}
             >
-              <Image 
+              <Image
                 src={src}
                 alt={`${productName} thumbnail ${idx + 1}`}
                 fill

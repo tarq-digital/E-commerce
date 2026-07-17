@@ -53,16 +53,79 @@ class ProductRepository {
 
   async findBySlugOrSku(identifier) {
     const [rows] = await pool.query(
-      "SELECT * FROM products WHERE (slug = ? OR sku = ?) AND deleted_at IS NULL LIMIT 1",
+      `SELECT p.*, 
+        c.name as category_name, c.slug as category_slug,
+        b.name as brand_name, b.slug as brand_slug, b.logo_url as brand_logo
+       FROM products p
+       LEFT JOIN categories c ON p.category_id = c.id
+       LEFT JOIN brands b ON p.brand_id = b.id
+       WHERE (p.slug = ? OR p.sku = ?) AND p.deleted_at IS NULL LIMIT 1`,
       [identifier, identifier],
     );
     const product = rows[0] || null;
     if (product) {
+      // 1. Fetch Images
       const [images] = await pool.query(
         "SELECT id, cloudinary_public_id, url, alt_text, display_order, is_primary, is_thumbnail FROM product_images WHERE product_id = ? ORDER BY display_order ASC",
         [product.id]
       );
       product.images = images;
+
+      // 2. Fetch Specifications
+      const [specs] = await pool.query(
+        "SELECT spec_key, spec_value FROM product_specifications WHERE product_id = ?",
+        [product.id]
+      );
+      product.specifications = specs;
+
+      // 3. Fetch Variants & Inventory
+      const [variants] = await pool.query(
+        `SELECT pv.*, i.available_stock, i.low_stock_threshold 
+         FROM product_variants pv
+         LEFT JOIN inventory i ON pv.id = i.variant_id
+         WHERE pv.product_id = ? AND pv.deleted_at IS NULL`,
+        [product.id]
+      );
+      
+      // 4. Fetch Variant Attributes
+      if (variants.length > 0) {
+        const variantIds = variants.map(v => v.id);
+        const [attributes] = await pool.query(
+          `SELECT vav.variant_id, a.name as attribute_name, av.value as attribute_value
+           FROM variant_attribute_values vav
+           JOIN attribute_values av ON vav.attribute_value_id = av.id
+           JOIN attributes a ON av.attribute_id = a.id
+           WHERE vav.variant_id IN (?)`,
+          [variantIds]
+        );
+        
+        // Group attributes by variant_id
+        const attributesByVariant = attributes.reduce((acc, curr) => {
+          if (!acc[curr.variant_id]) acc[curr.variant_id] = {};
+          acc[curr.variant_id][curr.attribute_name] = curr.attribute_value;
+          return acc;
+        }, {});
+
+        variants.forEach(v => {
+          v.attributes = attributesByVariant[v.id] || {};
+        });
+      }
+
+      product.variants = variants;
+      
+      // Nest category and brand for cleaner DTO
+      if (product.category_id) {
+        product.category = { id: product.category_id, name: product.category_name, slug: product.category_slug };
+      }
+      if (product.brand_id) {
+        product.brand = { id: product.brand_id, name: product.brand_name, slug: product.brand_slug, logo_url: product.brand_logo };
+      }
+      
+      delete product.category_name;
+      delete product.category_slug;
+      delete product.brand_name;
+      delete product.brand_slug;
+      delete product.brand_logo;
     }
     return product;
   }

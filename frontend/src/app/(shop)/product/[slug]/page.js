@@ -3,9 +3,11 @@ import { Heart, ShoppingBag, Truck, ShieldCheck, ChevronRight } from 'lucide-rea
 import Link from 'next/link';
 import styles from './product.module.css';
 import { ProductGallery } from '../../../components/product/ProductGallery/ProductGallery';
-import { VariantSelector } from '../../../components/product/VariantSelector/VariantSelector';
+import { ProductInteractive } from '../../../components/product/ProductInteractive/ProductInteractive';
+import { ProductTabs } from '../../../components/product/ProductTabs/ProductTabs';
+import { RecentlyViewed } from '../../../components/product/RecentlyViewed/RecentlyViewed';
+import { ProductSection } from '../../../components/home/ProductSection/ProductSection';
 import { StickyAddToCart } from '../../../components/product/StickyAddToCart/StickyAddToCart';
-import { Button } from '../../../components/ui/Button/Button';
 import { ErrorState } from '../../../components/ui/ErrorState/ErrorState';
 import { getProductImage } from '../../../utils/image';
 
@@ -20,6 +22,37 @@ async function getProductDetails(slug) {
     console.error("PDP Fetch Error:", error);
     return null;
   }
+}
+
+export async function generateMetadata({ params }) {
+  const product = await getProductDetails(params.slug);
+  
+  if (!product) {
+    return {
+      title: 'Product Not Found | Weebster',
+    };
+  }
+
+  const images = product.image?.secure_url ? [product.image.secure_url] : [];
+  const title = product.seo_title || `${product.name} | Weebster`;
+  const description = product.seo_description || product.short_description || product.description?.substring(0, 160) || 'Premium anime figure and merchandise.';
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images,
+    }
+  };
 }
 
 export default async function ProductPage({ params }) {
@@ -63,8 +96,41 @@ export default async function ProductPage({ params }) {
           <ChevronRight size={14} />
           <Link href="/shop">Shop</Link>
           <ChevronRight size={14} />
+          {product.category && (
+            <>
+              <Link href={`/category/${product.category.slug}`}>{product.category.name}</Link>
+              <ChevronRight size={14} />
+            </>
+          )}
           <span>{name}</span>
         </nav>
+        
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org/",
+              "@type": "Product",
+              "name": name,
+              "image": galleryImages,
+              "description": description,
+              "sku": product.sku,
+              "brand": {
+                "@type": "Brand",
+                "name": product.brand?.name || "Weebster"
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": `${process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000'}/product/${product.slug}`,
+                "priceCurrency": "USD",
+                "price": price,
+                "availability": isOutOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+                "itemCondition": "https://schema.org/NewCondition"
+              }
+            })
+          }}
+        />
         
         <div className={styles.productLayout}>
           {/* Image Gallery */}
@@ -81,60 +147,27 @@ export default async function ProductPage({ params }) {
           <div className={styles.infoSection}>
             <h1 className={styles.title}>{name}</h1>
             
-            <div className={styles.priceBlock}>
-              <span className={styles.price}>${parseFloat(price).toFixed(2)}</span>
-              {hasDiscount && (
-                <span className={styles.comparePrice}>${parseFloat(compare_at_price).toFixed(2)}</span>
-              )}
-            </div>
+            <ProductInteractive product={product} />
 
-            <VariantSelector variants={variants} />
-
-            <div className={styles.actions}>
-              <Button 
-                variant="primary" 
-                size="lg" 
-                fullWidth
-                disabled={isOutOfStock}
-                leftIcon={<ShoppingBag size={20} />}
-              >
-                {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className={styles.wishlistBtn}
-                aria-label="Add to Wishlist"
-              >
-                <Heart size={24} />
-              </Button>
-            </div>
-
-            <div className={styles.trustBadges}>
-              <div className={styles.trustBadge}>
-                <Truck size={20} className={styles.trustIcon} />
-                <div className={styles.trustText}>
-                  <strong>Free Shipping</strong>
-                  <span>On orders over $100</span>
-                </div>
-              </div>
-              <div className={styles.trustBadge}>
-                <ShieldCheck size={20} className={styles.trustIcon} />
-                <div className={styles.trustText}>
-                  <strong>Authentic Guarantee</strong>
-                  <span>100% genuine licensed products</span>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.descriptionBlock}>
-              <h3 className={styles.descriptionTitle}>Product Details</h3>
-              <div className={styles.description}>
-                <p>{description || 'Premium collectible figure featuring exceptional detail and articulation. Hand-painted with meticulous care to bring your favorite character to life.'}</p>
-              </div>
-            </div>
           </div>
         </div>
+
+        {/* Tabs Section (Description, Specs, Reviews, Shipping) */}
+        <ProductTabs product={product} />
+
+      </div>
+
+      <div style={{ padding: '0', marginTop: '60px' }}>
+        {/* Related Products */}
+        {product.related_products && product.related_products.length > 0 && (
+          <ProductSection 
+            title="You May Also Like"
+            products={product.related_products}
+          />
+        )}
+
+        {/* Recently Viewed */}
+        <RecentlyViewed currentProduct={product} />
       </div>
       
       {/* Sticky Add to Cart (Only appears when scrolling past main button) */}
