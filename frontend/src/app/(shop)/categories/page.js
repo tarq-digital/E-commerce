@@ -6,7 +6,7 @@ import styles from './categories.module.css';
 import { getBannerImage, getCategoryImage } from '../../../utils/image';
 
 async function getCategories() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
   try {
     const res = await fetch(`${apiUrl}/store/categories`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch categories');

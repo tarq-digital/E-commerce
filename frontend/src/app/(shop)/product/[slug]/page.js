@@ -2,16 +2,16 @@ import React from 'react';
 import { Heart, ShoppingBag, Truck, ShieldCheck, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import styles from './product.module.css';
-import { ProductGallery } from '../../../components/product/ProductGallery/ProductGallery';
-import { ProductInteractive } from '../../../components/product/ProductInteractive/ProductInteractive';
-import { ProductTabs } from '../../../components/product/ProductTabs/ProductTabs';
-import { RecentlyViewed } from '../../../components/product/RecentlyViewed/RecentlyViewed';
-import { ProductSection } from '../../../components/home/ProductSection/ProductSection';
-import { ErrorState } from '../../../components/ui/ErrorState/ErrorState';
-import { getProductImage } from '../../../utils/image';
+import { ProductGallery } from '../../../../components/product/ProductGallery/ProductGallery';
+import { ProductInteractive } from '../../../../components/product/ProductInteractive/ProductInteractive';
+import { ProductTabs } from '../../../../components/product/ProductTabs/ProductTabs';
+import { RecentlyViewed } from '../../../../components/product/RecentlyViewed/RecentlyViewed';
+import { ProductSection } from '../../../../components/home/ProductSection/ProductSection';
+import { ErrorState } from '../../../../components/ui/ErrorState/ErrorState';
+import { getProductImage } from '../../../../utils/image';
 
 async function getProductDetails(slug) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
   try {
     const res = await fetch(`${apiUrl}/store/products/${slug}`, { next: { revalidate: 0 } });
     if (!res.ok) throw new Error('Failed to fetch product');
@@ -63,7 +63,6 @@ export default async function ProductPage({ params }) {
         <ErrorState 
           title="Product Not Found" 
           message="The product you are looking for does not exist or has been removed."
-          onRetry={() => {}} // Could be a router back
         />
       </main>
     );

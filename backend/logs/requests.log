@@ -84,3 +84,7 @@
 {"duration":"8ms","ip":"::1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 21:39:55","url":"/api/v1/store/products?","userAgent":"node"}
 {"duration":"7ms","ip":"::1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 21:40:01","url":"/api/v1/store/products?category=action-figures","userAgent":"node"}
 {"duration":"9ms","ip":"::1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 21:40:07","url":"/api/v1/store/products?brand=megahouse","userAgent":"node"}
+{"duration":"40ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 22:40:58","url":"/api/v1/store/home","userAgent":"node"}
+{"duration":"36ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 22:41:02","url":"/api/v1/store/products/gundam-aerial-1144-hg","userAgent":"node"}
+{"duration":"56ms","ip":"::ffff:127.0.0.1","level":"error","message":"API Request Failed","method":"POST","status":500,"timestamp":"2026-07-17 22:41:07","url":"/api/v1/store/cart/items","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"}
+{"duration":"11ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-17 22:41:22","url":"/api/v1/store/products/gundam-aerial-1144-hg","userAgent":"node"}

@@ -71,7 +71,7 @@ class AddressService {
     if (!phone || !phoneRegex.test(phone)) throw new ApiError(httpStatus.BAD_REQUEST, 'Valid phone number is required (10-15 digits)');
     
     if (data.email) {
-      const emailRegex = /^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/;
+      const emailRegex = /^[\w.\-]+@([\w\-]+\.)+[\w\-]{2,4}$/;
       if (!emailRegex.test(data.email)) throw new ApiError(httpStatus.BAD_REQUEST, 'Valid email is required');
     }
 
@@ -79,7 +79,7 @@ class AddressService {
     if (!city || city.length < 2) throw new ApiError(httpStatus.BAD_REQUEST, 'Valid city is required');
     if (!state || state.length < 2) throw new ApiError(httpStatus.BAD_REQUEST, 'Valid state is required');
     
-    const pinRegex = /^[0-9a-zA-Z\\s-]{4,10}$/; // Generic pincode validation for international support
+    const pinRegex = /^[0-9a-zA-Z\s\-]{4,10}$/; // Generic pincode validation for international support
     if (!pincode || !pinRegex.test(pincode)) throw new ApiError(httpStatus.BAD_REQUEST, 'Valid pincode is required');
   }
 }

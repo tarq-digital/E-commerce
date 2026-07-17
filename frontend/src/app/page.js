@@ -9,7 +9,7 @@ import { ErrorState } from '../components/ui/ErrorState/ErrorState';
 export const revalidate = 60; // Next.js ISR
 
 async function getHomeData() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
   try {
     const res = await fetch(`${apiUrl}/store/home`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch home data');

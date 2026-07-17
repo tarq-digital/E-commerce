@@ -8,7 +8,7 @@ import { ErrorState } from '../../../components/ui/ErrorState/ErrorState';
 
 async function getProducts(searchParams) {
   const query = new URLSearchParams(searchParams).toString();
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
   try {
     const res = await fetch(`${apiUrl}/store/products?${query}`, { next: { revalidate: 0 } });
     if (!res.ok) throw new Error('Failed to fetch products');
