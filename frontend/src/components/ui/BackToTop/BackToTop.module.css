@@ -1,0 +1,25 @@
+.backToTop {
+  position: fixed;
+  bottom: calc(var(--safe-area-bottom) + var(--space-20));
+  right: var(--space-4);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-sticky);
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .backToTop {
+    bottom: var(--space-8);
+    right: var(--space-8);
+  }
+}

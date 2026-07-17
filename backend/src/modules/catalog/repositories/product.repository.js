@@ -3,7 +3,15 @@ const QueryBuilder = require("../../../utils/query-builder");
 
 class ProductRepository {
   async findAll(queryParams) {
-    const builder = new QueryBuilder("SELECT * FROM products", queryParams);
+    const baseQuery = `
+      SELECT p.*,
+        pi.cloudinary_public_id AS primary_image_public_id,
+        pi.url AS primary_image_url,
+        pi.alt_text AS primary_image_alt
+      FROM products p
+      LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+    `;
+    const builder = new QueryBuilder(baseQuery, queryParams);
     builder
       .filter(["status", "category_id", "brand_id", "visibility"])
       .search(["name", "sku", "description"])
@@ -32,7 +40,15 @@ class ProductRepository {
       "SELECT * FROM products WHERE id = ? AND deleted_at IS NULL LIMIT 1",
       [id],
     );
-    return rows[0] || null;
+    const product = rows[0] || null;
+    if (product) {
+      const [images] = await pool.query(
+        "SELECT id, cloudinary_public_id, url, alt_text, display_order, is_primary, is_thumbnail FROM product_images WHERE product_id = ? ORDER BY display_order ASC",
+        [id]
+      );
+      product.images = images;
+    }
+    return product;
   }
 
   async findBySlugOrSku(identifier) {
@@ -40,7 +56,15 @@ class ProductRepository {
       "SELECT * FROM products WHERE (slug = ? OR sku = ?) AND deleted_at IS NULL LIMIT 1",
       [identifier, identifier],
     );
-    return rows[0] || null;
+    const product = rows[0] || null;
+    if (product) {
+      const [images] = await pool.query(
+        "SELECT id, cloudinary_public_id, url, alt_text, display_order, is_primary, is_thumbnail FROM product_images WHERE product_id = ? ORDER BY display_order ASC",
+        [product.id]
+      );
+      product.images = images;
+    }
+    return product;
   }
 
   // --- Methods executing inside a transaction --- //

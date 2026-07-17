@@ -14,6 +14,14 @@ class ProductService {
     return ProductRepository.findAll(queryParams);
   }
 
+  async getProductBySlug(slug) {
+    const product = await ProductRepository.findBySlugOrSku(slug);
+    if (!product) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Product not found");
+    }
+    return product;
+  }
+
   async createProductWithVariantsAndImages(data, files, req) {
     const slug = data.slug ? generateSlug(data.slug) : generateSlug(data.name);
 

@@ -1,0 +1,46 @@
+{
+  "banners": [
+    {
+      "id": "hero_1",
+      "public_id": "hero-1",
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217323/hero-1.webp",
+      "title": "Discover Premium Toys",
+      "subtitle": "Elevate your collection with our exclusive releases.",
+      "cta_text": "Shop Now",
+      "cta_link": "/shop"
+    }
+  ],
+  "products": {
+    "Gundam Aerial 1/144 HG": {
+      "public_id": "bt1goea7m68b788jgyqi",
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217650/bt1goea7m68b788jgyqi.webp"
+    },
+    "Hatsune Miku Symphony 2020 Statue": {
+      "public_id": "m8jvzvzvwbjwwy0nytyz",
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217650/m8jvzvzvwbjwwy0nytyz.webp"
+    },
+    "Jujutsu Kaisen Satoru Gojo Nendoroid": {
+      "public_id": "ogrbs4a98uzunvc5zv1g",
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217649/ogrbs4a98uzunvc5zv1g.webp"
+    }
+  },
+  "categories": {
+    "Action Figures": {
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217638/s3avigvlgeghavepij2r.webp"
+    },
+    "Statues & Busts": {
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217634/rldgqmj5l4rpzti1ezws.webp"
+    },
+    "Model Kits": {
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217634/iahuim935t7zv7lcb86i.webp"
+    }
+  },
+  "brands": {
+    "Bandai Spirits": {
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217634/bpb9y1yw3llu3nsxytsm.webp"
+    },
+    "Good Smile Company": {
+      "url": "https://res.cloudinary.com/zsl36hvv/image/upload/v1784217634/qrpvamovslaksbwa0qp1.webp"
+    }
+  }
+}

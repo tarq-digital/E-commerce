@@ -1,0 +1,51 @@
+.container {
+  position: fixed;
+  bottom: calc(60px + var(--safe-area-bottom)); /* Above mobile nav */
+  left: 0;
+  right: 0;
+  background-color: hsl(var(--background) / 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid hsl(var(--border));
+  padding: var(--space-3) 0;
+  z-index: var(--z-sticky);
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    bottom: 0; /* No mobile nav on desktop */
+    padding: var(--space-4) 0;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+}
+
+.action {
+  flex-shrink: 0;
+}

@@ -1,0 +1,53 @@
+import { Inter, Outfit } from 'next/font/google';
+import './globals.css';
+import { Header } from '../components/layout/Header/Header';
+import { BottomNavigation } from '../components/layout/BottomNavigation/BottomNavigation';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
+
+export const metadata = {
+  metadataBase: new URL('https://weebster.com'),
+  title: {
+    default: 'Weebster | Premium Toy Store',
+    template: '%s | Weebster',
+  },
+  description: 'Discover premium, exclusive toys at Weebster. Elevate your collection.',
+  openGraph: {
+    title: 'Weebster | Premium Toy Store',
+    description: 'Discover premium, exclusive toys at Weebster.',
+    url: 'https://weebster.com',
+    siteName: 'Weebster',
+    locale: 'en_IN',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
+};
+
+export default function RootLayout({ children }) {
+  // Global JSON-LD for Organization
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Weebster",
+    "url": "https://weebster.com",
+    "logo": "https://weebster.com/logo.png"
+  };
+
+  return (
+    <html lang="en">
+      <body className={`${inter.variable} ${outfit.variable}`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Header />
+        <main>{children}</main>
+        <BottomNavigation />
+      </body>
+    </html>
+  );
+}

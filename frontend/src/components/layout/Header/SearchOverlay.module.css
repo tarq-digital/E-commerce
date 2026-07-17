@@ -1,0 +1,110 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsl(var(--background) / 0.95);
+  backdrop-filter: blur(10px);
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.searchBar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: hsl(var(--secondary));
+  border-radius: var(--radius-xl);
+  padding: 0 var(--space-4);
+  height: 56px;
+  position: relative;
+}
+
+.searchIcon {
+  color: hsl(var(--muted-foreground));
+}
+
+.input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+  color: hsl(var(--foreground));
+  font-family: var(--font-inter);
+}
+
+.input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.clearBtn {
+  color: hsl(var(--muted-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeOverlayBtn {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.suggestions {
+  padding: var(--space-8) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.tag {
+  background-color: hsl(var(--secondary));
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: hsl(var(--secondary-foreground));
+  transition: background-color var(--transition-fast);
+}
+
+.tag:hover {
+  background-color: hsl(var(--border));
+}
+
+.resultsPreview {
+  padding: var(--space-8) 0;
+  text-align: center;
+}
+
+.previewText {
+  color: hsl(var(--muted-foreground));
+}
