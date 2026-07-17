@@ -7,7 +7,6 @@ import { ProductInteractive } from '../../../components/product/ProductInteracti
 import { ProductTabs } from '../../../components/product/ProductTabs/ProductTabs';
 import { RecentlyViewed } from '../../../components/product/RecentlyViewed/RecentlyViewed';
 import { ProductSection } from '../../../components/home/ProductSection/ProductSection';
-import { StickyAddToCart } from '../../../components/product/StickyAddToCart/StickyAddToCart';
 import { ErrorState } from '../../../components/ui/ErrorState/ErrorState';
 import { getProductImage } from '../../../utils/image';
 
@@ -169,13 +168,6 @@ export default async function ProductPage({ params }) {
         {/* Recently Viewed */}
         <RecentlyViewed currentProduct={product} />
       </div>
-      
-      {/* Sticky Add to Cart (Only appears when scrolling past main button) */}
-      <StickyAddToCart 
-        productName={name}
-        price={price}
-        isOutOfStock={isOutOfStock}
-      />
     </div>
   );
 }

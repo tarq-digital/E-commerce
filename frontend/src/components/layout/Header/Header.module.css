@@ -171,6 +171,7 @@
 }
 
 .iconButton {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,6 +180,24 @@
   border-radius: var(--radius-full);
   color: hsl(var(--foreground));
   transition: background-color var(--transition-fast);
+}
+
+.cartBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: var(--color-danger);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid hsl(var(--background));
 }
 
 .iconButton:hover {

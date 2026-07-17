@@ -4,6 +4,8 @@ import React, { useState, useMemo } from 'react';
 import { Heart, ShoppingBag, Truck, ShieldCheck, Minus, Plus } from 'lucide-react';
 import { Button } from '../../ui/Button/Button';
 import { VariantSelector } from '../VariantSelector/VariantSelector';
+import { StickyAddToCart } from '../StickyAddToCart/StickyAddToCart';
+import { useCartDispatch, useCartState } from '../../../context/CartContext';
 import styles from './ProductInteractive.module.css';
 
 export const ProductInteractive = ({ product }) => {
@@ -12,6 +14,11 @@ export const ProductInteractive = ({ product }) => {
   // State
   const [selectedVariant, setSelectedVariant] = useState(variants[0] || null);
   const [quantity, setQuantity] = useState(1);
+
+  // Cart Context
+  const { addToCart } = useCartDispatch();
+  const { status } = useCartState();
+  const isAdding = status.isAdding;
 
   // Derived values
   const activePrice = selectedVariant ? selectedVariant.price : base_price;
@@ -98,10 +105,11 @@ export const ProductInteractive = ({ product }) => {
             variant="primary" 
             size="lg" 
             fullWidth
-            disabled={isOutOfStock}
+            disabled={isOutOfStock || isAdding}
             leftIcon={<ShoppingBag size={20} />}
+            onClick={() => addToCart(product, selectedVariant, quantity)}
           >
-            {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            {isOutOfStock ? 'Out of Stock' : isAdding ? 'Adding...' : 'Add to Cart'}
           </Button>
           <Button 
             variant="outline" 
@@ -142,6 +150,14 @@ export const ProductInteractive = ({ product }) => {
           </div>
         </div>
       </div>
+
+      <StickyAddToCart 
+        product={product}
+        selectedVariant={selectedVariant}
+        quantity={quantity}
+        isOutOfStock={isOutOfStock}
+        isAdding={isAdding}
+      />
 
     </div>
   );

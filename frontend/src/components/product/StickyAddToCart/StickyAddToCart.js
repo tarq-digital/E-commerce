@@ -5,9 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag } from 'lucide-react';
 import styles from './StickyAddToCart.module.css';
 import { Button } from '../../ui/Button/Button';
+import { useCartDispatch } from '../../../context/CartContext';
 
-export const StickyAddToCart = ({ productName, price, isOutOfStock }) => {
+export const StickyAddToCart = ({ product, selectedVariant, quantity, isOutOfStock, isAdding }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const { addToCart } = useCartDispatch();
+  
+  const productName = product?.name || '';
+  const price = selectedVariant ? selectedVariant.price : product?.price || 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,10 +47,11 @@ export const StickyAddToCart = ({ productName, price, isOutOfStock }) => {
               <Button 
                 variant="primary" 
                 size="md" 
-                disabled={isOutOfStock}
+                disabled={isOutOfStock || isAdding}
                 leftIcon={<ShoppingBag size={18} />}
+                onClick={() => addToCart(product, selectedVariant, quantity)}
               >
-                {isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                {isOutOfStock ? 'Sold Out' : isAdding ? 'Adding...' : 'Add to Cart'}
               </Button>
             </div>
           </div>

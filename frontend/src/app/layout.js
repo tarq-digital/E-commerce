@@ -1,5 +1,6 @@
 import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
+import { CartProvider } from '../context/CartContext';
 import { Header } from '../components/layout/Header/Header';
 import { BottomNavigation } from '../components/layout/BottomNavigation/BottomNavigation';
 
@@ -44,8 +45,12 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Header />
-        <main>{children}</main>
+        <CartProvider>
+          <Header />
+          <main className="main-content">
+            {children}
+          </main>
+        </CartProvider>
         <BottomNavigation />
       </body>
     </html>

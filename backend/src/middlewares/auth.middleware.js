@@ -100,8 +100,41 @@ const requirePermission = (permissionName) => {
   });
 };
 
+const optionalAuth = catchAsync(async (req, res, next) => {
+  let token = req.cookies?.access_token;
+
+  if (!token && req.headers.authorization?.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = verifyAccessToken(token);
+
+    if (decoded.sessionId) {
+      const activeSession = await SessionRepository.findActiveSession(decoded.sessionId);
+      if (activeSession) {
+        SessionRepository.updateLastActivity(decoded.sessionId).catch((err) =>
+          logger.error("Failed to update session activity:", err),
+        );
+        req.user = decoded;
+      }
+    } else {
+      req.user = decoded;
+    }
+  } catch (error) {
+    // Silently fail auth for optional routes
+  }
+  
+  next();
+});
+
 module.exports = {
   requireAuth,
   requireRole,
   requirePermission,
+  optionalAuth,
 };

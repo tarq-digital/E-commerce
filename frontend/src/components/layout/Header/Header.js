@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Search, Menu, ShoppingBag, Heart, User } from 'lucide-react';
 import styles from './Header.module.css';
 import { SearchOverlay } from './SearchOverlay';
+import { CartBadge } from './CartBadge';
+import { CartDrawer } from '../../cart/CartDrawer/CartDrawer';
 import { cn } from '../../../utils/cn';
 
 export const Header = () => {
@@ -72,9 +74,7 @@ export const Header = () => {
             <Link href="/account" className={cn(styles.iconButton, styles.desktopOnly)}>
               <User size={24} />
             </Link>
-            <Link href="/cart" className={styles.iconButton}>
-              <ShoppingBag size={24} />
-            </Link>
+            <CartBadge />
             <button className={cn(styles.iconButton, styles.mobileOnly)}>
               <Menu size={24} />
             </button>
@@ -83,6 +83,7 @@ export const Header = () => {
       </header>
 
       <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <CartDrawer />
     </>
   );
 };
