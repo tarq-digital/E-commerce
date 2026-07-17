@@ -7,6 +7,7 @@ const router = express.Router();
 
 const adminRoutes = require("./admin");
 const storeRoutes = require("./store");
+const webhooksRoutes = require("./webhooks.routes");
 
 // Mount infrastructure routes
 router.use(ROUTES?.HEALTH || "/health", healthRoutes);
@@ -19,5 +20,8 @@ router.use(ROUTES?.ADMIN || "/admin", adminRoutes);
 
 // Mount public storefront routes (Phase 9)
 router.use(ROUTES?.STORE || "/store", storeRoutes);
+
+// Mount webhooks (Phase 12.2)
+router.use("/webhooks", webhooksRoutes);
 
 module.exports = router;

@@ -40,6 +40,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.1",
     "nodemailer": "^6.9.9",
+    "razorpay": "^2.9.2",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
