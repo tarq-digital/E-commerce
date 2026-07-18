@@ -17,7 +17,7 @@ const corsConfig = {
   },
   credentials: true, // Required for HttpOnly cookies
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-guest-cart-token"],
 };
 
 module.exports = corsConfig;

@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS warehouses (
 INSERT IGNORE INTO warehouses (id, name, location_address) VALUES (1, 'Main Fulfillment Center', 'Headquarters');
 
 -- 2. Modify Inventory Table to support multi-warehouse
+-- Drop the foreign key first to allow dropping the index (MySQL auto-generates name inventory_ibfk_1)
+ALTER TABLE inventory DROP FOREIGN KEY inventory_ibfk_1;
+
 -- Drop existing unique constraint on variant_id
 ALTER TABLE inventory DROP INDEX variant_id;
 
@@ -21,6 +24,10 @@ ALTER TABLE inventory
 ADD COLUMN warehouse_id INT NOT NULL DEFAULT 1 AFTER variant_id,
 ADD CONSTRAINT fk_inventory_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouses(id) ON DELETE RESTRICT,
 ADD UNIQUE INDEX idx_inventory_variant_warehouse (variant_id, warehouse_id);
+
+-- Recreate the foreign key for variant_id
+ALTER TABLE inventory
+ADD CONSTRAINT inventory_ibfk_1 FOREIGN KEY (variant_id) REFERENCES product_variants(id) ON DELETE CASCADE;
 
 -- 3. Modify Inventory Transactions
 ALTER TABLE inventory_transactions

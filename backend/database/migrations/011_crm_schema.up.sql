@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS customer_notes (
 
 -- 5. Customer Tags
 -- Add color to existing tags table (from 002) if not exists
-ALTER TABLE tags ADD COLUMN IF NOT EXISTS color VARCHAR(20) DEFAULT 'gray';
+ALTER TABLE tags ADD COLUMN color VARCHAR(20) DEFAULT 'gray';
 
 CREATE TABLE IF NOT EXISTS customer_tags (
     user_id INT NOT NULL,

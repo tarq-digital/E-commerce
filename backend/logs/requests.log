@@ -108,3 +108,6 @@
 {"duration":"9ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 19:19:01","url":"/api/v1/store/home","userAgent":"node"}
 {"duration":"68ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 19:27:10","url":"/api/v1/store/home","userAgent":"node"}
 {"duration":"16ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 19:42:11","url":"/api/v1/store/home","userAgent":"node"}
+{"duration":"51ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 19:49:35","url":"/api/v1/store/home","userAgent":"node"}
+{"duration":"13ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 20:12:24","url":"/api/v1/store/home","userAgent":"node"}
+{"duration":"16ms","ip":"::ffff:127.0.0.1","level":"info","message":"API Request Success","method":"GET","status":200,"timestamp":"2026-07-18 20:12:29","url":"/api/v1/store/products/gundam-aerial-1144-hg","userAgent":"node"}
