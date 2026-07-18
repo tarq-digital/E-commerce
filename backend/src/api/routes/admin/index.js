@@ -13,6 +13,8 @@ const orderRoutes = require("./order.routes");
 const customerRoutes = require("./customer.routes");
 const promotionRoutes = require("./promotion.routes");
 const analyticsRoutes = require("./analytics.routes");
+const settingsRoutes = require("./settings.routes");
+const mediaRoutes = require("./media.routes");
 
 const router = express.Router();
 
@@ -29,5 +31,7 @@ router.use("/orders", orderRoutes);
 router.use("/customers", customerRoutes);
 router.use("/promotions", promotionRoutes);
 router.use("/analytics", analyticsRoutes);
+router.use("/settings", settingsRoutes);
+router.use("/media", mediaRoutes);
 
 module.exports = router;
