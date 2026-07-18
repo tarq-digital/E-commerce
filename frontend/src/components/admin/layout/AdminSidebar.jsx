@@ -13,12 +13,13 @@ import {
   Image as ImageIcon,
   LogOut
 } from 'lucide-react';
-import { deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../context/AuthContext';
 
 export function AdminSidebar({ isCollapsed }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { logout } = useAuth();
 
   const navItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -31,9 +32,7 @@ export function AdminSidebar({ isCollapsed }) {
   ];
 
   const handleLogout = () => {
-    deleteCookie('token');
-    deleteCookie('user');
-    router.push('/login');
+    logout();
   };
 
   return (

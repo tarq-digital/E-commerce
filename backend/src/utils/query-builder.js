@@ -9,6 +9,12 @@ class QueryBuilder {
     this.values = [];
     this.orderBy = "";
     this.limitOffset = "";
+    this.softDeleteCol = "deleted_at";
+  }
+
+  setSoftDeleteCol(col) {
+    this.softDeleteCol = col;
+    return this;
   }
 
   filter(allowedFields) {
@@ -62,7 +68,7 @@ class QueryBuilder {
 
   build(includeSoftDeleted = false) {
     if (!includeSoftDeleted) {
-      this.whereClauses.push("deleted_at IS NULL");
+      this.whereClauses.push(`${this.softDeleteCol} IS NULL`);
     }
 
     const whereString = this.whereClauses.length
@@ -77,14 +83,14 @@ class QueryBuilder {
   // To get the total count for pagination metadata
   buildCount(includeSoftDeleted = false) {
     const countQuery = this.query.replace(
-      /SELECT .* FROM/i,
-      "SELECT COUNT(*) as total FROM",
+      /SELECT .*? FROM/is,
+      "SELECT COUNT(*) as total FROM "
     );
     if (
       !includeSoftDeleted &&
-      !this.whereClauses.includes("deleted_at IS NULL")
+      !this.whereClauses.includes(`${this.softDeleteCol} IS NULL`)
     ) {
-      this.whereClauses.push("deleted_at IS NULL");
+      this.whereClauses.push(`${this.softDeleteCol} IS NULL`);
     }
     const whereString = this.whereClauses.length
       ? `WHERE ${this.whereClauses.join(" AND ")}`

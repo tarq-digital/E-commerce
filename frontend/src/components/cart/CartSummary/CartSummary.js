@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { useCartState, useCartDispatch } from '../../../context/CartContext';
+import { useRouter } from 'next/navigation';
 import { Button } from '../../ui/Button/Button';
 import styles from './CartSummary.module.css';
 
 export const CartSummary = () => {
   const { subtotal, status } = useCartState();
   const { toggleDrawer } = useCartDispatch();
+  const router = useRouter();
 
-  // In a real app you might have a dedicated checkout flow.
-  // For now we just route or mock.
   const handleCheckout = () => {
-    alert("Proceeding to Checkout... (Phase 12)");
     toggleDrawer(false);
+    router.push('/checkout');
   };
 
   return (
@@ -44,7 +44,7 @@ export const CartSummary = () => {
       </Button>
       
       <p className={styles.subtext}>
-        Secure checkout powered by Stripe
+        Secure checkout powered by Razorpay
       </p>
     </div>
   );

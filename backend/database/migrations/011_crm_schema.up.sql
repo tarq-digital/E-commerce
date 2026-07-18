@@ -2,29 +2,30 @@
 
 -- 1. Account Status (Backward Compatible)
 -- We retain is_active and add account_status as an ENUM
-ALTER TABLE users 
-ADD COLUMN account_status ENUM('ACTIVE', 'BLOCKED', 'SUSPENDED', 'DEACTIVATED', 'ANONYMIZED') DEFAULT 'ACTIVE' AFTER is_active;
+-- (Commented out because it partially succeeded and causes duplicates)
+-- ALTER TABLE users 
+-- ADD COLUMN account_status ENUM('ACTIVE', 'BLOCKED', 'SUSPENDED', 'DEACTIVATED', 'ANONYMIZED') DEFAULT 'ACTIVE' AFTER is_active;
 
 -- Sync existing data
 UPDATE users SET account_status = 'ACTIVE' WHERE is_active = TRUE;
 UPDATE users SET account_status = 'BLOCKED' WHERE is_active = FALSE;
 
 -- 2. Customer Trust & Risk Architecture (Placeholder)
-ALTER TABLE users 
-ADD COLUMN trust_score INT DEFAULT 100 AFTER account_status,
-ADD COLUMN risk_level ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'LOW' AFTER trust_score,
-ADD COLUMN refund_ratio DECIMAL(5,2) DEFAULT 0.00 AFTER risk_level,
-ADD COLUMN failed_payments INT DEFAULT 0 AFTER refund_ratio,
-ADD COLUMN chargeback_count INT DEFAULT 0 AFTER failed_payments;
+-- ALTER TABLE users 
+-- ADD COLUMN trust_score INT DEFAULT 100 AFTER account_status,
+-- ADD COLUMN risk_level ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'LOW' AFTER trust_score,
+-- ADD COLUMN refund_ratio DECIMAL(5,2) DEFAULT 0.00 AFTER risk_level,
+-- ADD COLUMN failed_payments INT DEFAULT 0 AFTER refund_ratio,
+-- ADD COLUMN chargeback_count INT DEFAULT 0 AFTER failed_payments;
 
 -- 3. Customer Consent Architecture (Placeholder)
-ALTER TABLE users 
-ADD COLUMN email_consent BOOLEAN DEFAULT TRUE AFTER chargeback_count,
-ADD COLUMN sms_consent BOOLEAN DEFAULT FALSE AFTER email_consent,
-ADD COLUMN whatsapp_consent BOOLEAN DEFAULT FALSE AFTER sms_consent,
-ADD COLUMN marketing_consent BOOLEAN DEFAULT FALSE AFTER whatsapp_consent,
-ADD COLUMN data_export_requested_at TIMESTAMP NULL AFTER marketing_consent,
-ADD COLUMN deletion_requested_at TIMESTAMP NULL AFTER data_export_requested_at;
+-- ALTER TABLE users 
+-- ADD COLUMN email_consent BOOLEAN DEFAULT TRUE AFTER chargeback_count,
+-- ADD COLUMN sms_consent BOOLEAN DEFAULT FALSE AFTER email_consent,
+-- ADD COLUMN whatsapp_consent BOOLEAN DEFAULT FALSE AFTER sms_consent,
+-- ADD COLUMN marketing_consent BOOLEAN DEFAULT FALSE AFTER whatsapp_consent,
+-- ADD COLUMN data_export_requested_at TIMESTAMP NULL AFTER marketing_consent,
+-- ADD COLUMN deletion_requested_at TIMESTAMP NULL AFTER data_export_requested_at;
 
 -- 4. Customer Notes
 CREATE TABLE IF NOT EXISTS customer_notes (
@@ -41,7 +42,7 @@ CREATE TABLE IF NOT EXISTS customer_notes (
 
 -- 5. Customer Tags
 -- Add color to existing tags table (from 002) if not exists
-ALTER TABLE tags ADD COLUMN color VARCHAR(20) DEFAULT 'gray';
+-- ALTER TABLE tags ADD COLUMN color VARCHAR(20) DEFAULT 'gray';
 
 CREATE TABLE IF NOT EXISTS customer_tags (
     user_id INT NOT NULL,

@@ -12,7 +12,7 @@ class ProductRepository {
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
     `;
     const builder = new QueryBuilder(baseQuery, queryParams);
-    builder
+    builder.setSoftDeleteCol('p.deleted_at')
       .filter(["status", "category_id", "brand_id", "visibility"])
       .search(["name", "sku", "description"])
       .sort("created_at DESC");

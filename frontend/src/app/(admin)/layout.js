@@ -3,10 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { AdminSidebar } from '../../components/admin/layout/AdminSidebar';
 import { AdminTopbar } from '../../components/admin/layout/AdminTopbar';
+import { useAuth } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AdminLayout({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   // Layout Persistence Strategy
   useEffect(() => {
@@ -17,6 +22,12 @@ export default function AdminLayout({ children }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (!loading && (!user || user.role !== 'ADMIN')) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
   const toggleSidebar = () => {
     const newState = !isCollapsed;
     setIsCollapsed(newState);
@@ -24,7 +35,8 @@ export default function AdminLayout({ children }) {
   };
 
   // Prevent hydration mismatch on the sidebar class
-  if (!isMounted) return null;
+  if (!isMounted || loading) return null;
+  if (!user || user.role !== 'ADMIN') return null;
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">

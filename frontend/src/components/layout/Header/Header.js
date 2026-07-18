@@ -8,10 +8,12 @@ import { SearchOverlay } from './SearchOverlay';
 import { CartBadge } from './CartBadge';
 import { CartDrawer } from '../../cart/CartDrawer/CartDrawer';
 import { cn } from '../../../utils/cn';
+import { useAuth } from '../../../context/AuthContext';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,7 +73,7 @@ export const Header = () => {
             <Link href="/wishlist" className={cn(styles.iconButton, styles.desktopOnly)}>
               <Heart size={24} />
             </Link>
-            <Link href="/account" className={cn(styles.iconButton, styles.desktopOnly)}>
+            <Link href={user ? "/account" : "/login"} className={cn(styles.iconButton, styles.desktopOnly)}>
               <User size={24} />
             </Link>
             <CartBadge />

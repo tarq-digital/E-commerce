@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag } from 'lucide-react';
 import { useCartState, useCartDispatch } from '../../../context/CartContext';
@@ -13,6 +13,11 @@ export const CartDrawer = () => {
   const { isDrawerOpen, items, status } = useCartState();
   const { toggleDrawer } = useCartDispatch();
   const drawerRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Focus trapping & ESC to close
   useEffect(() => {
@@ -34,6 +39,8 @@ export const CartDrawer = () => {
   }, [isDrawerOpen, toggleDrawer]);
 
   const isEmpty = items.length === 0;
+
+  if (!isMounted) return null;
 
   return (
     <AnimatePresence>

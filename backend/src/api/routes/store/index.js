@@ -6,6 +6,7 @@ const shippingRoutes = require('./shipping.routes');
 const checkoutRoutes = require('./checkout.routes');
 const paymentRoutes = require('./payment.routes');
 const orderRoutes = require('./order.routes');
+const wishlistRoutes = require('./wishlist.routes');
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/shipping-methods', shippingRoutes);
 router.use('/checkout', checkoutRoutes);
 router.use('/payment', paymentRoutes);
 router.use('/orders', orderRoutes);
+router.use('/wishlist', wishlistRoutes);
 
 module.exports = router;

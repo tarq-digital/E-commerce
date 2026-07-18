@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import styles from './ProductCard.module.css';
 import { cn } from '../../../utils/cn';
 import { getProductImage } from '../../../utils/image';
+import { useAuth } from '../../../context/AuthContext';
 
 export const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,9 +21,39 @@ export const ProductCard = ({ product }) => {
   const discountPercent = hasDiscount ? Math.round(((compare_at_price - price) / compare_at_price) * 100) : 0;
   const isOutOfStock = stock_status === 'OUT_OF_STOCK';
 
-  const handleWishlist = (e) => {
+  const { token, user } = useAuth();
+
+  const handleWishlist = async (e) => {
     e.preventDefault();
-    setIsWishlisted(!isWishlisted);
+    if (!user || !token) {
+        alert("Please log in to add to wishlist");
+        return;
+    }
+    
+    const newStatus = !isWishlisted;
+    setIsWishlisted(newStatus); // Optimistic UI update
+
+    try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+        if (newStatus) {
+            await fetch(`${apiUrl}/store/wishlist`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` 
+                },
+                body: JSON.stringify({ product_id: product.id })
+            });
+        } else {
+            await fetch(`${apiUrl}/store/wishlist/${product.id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        setIsWishlisted(!newStatus); // Revert on failure
+    }
   };
 
   const handleQuickAdd = (e) => {

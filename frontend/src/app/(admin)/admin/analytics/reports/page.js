@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { getCookie } from 'cookies-next';
 import { Download, FileText, Calendar, Filter, FileSpreadsheet } from 'lucide-react';
+import { useAuth } from '../../../../../context/AuthContext';
 import { AdminCard } from '../../../../../components/admin/ui/AdminCard';
 import { AdminButton } from '../../../../../components/admin/ui/AdminButton';
 
@@ -11,12 +11,11 @@ export default function ReportsDashboard() {
   const [dateRange, setDateRange] = useState('LAST_30_DAYS');
   const [customStart, setCustomStart] = useState('');
   const [customEnd, setCustomEnd] = useState('');
+  const { token } = useAuth();
 
   const handleExport = async (reportType) => {
     setIsExporting(reportType);
     try {
-      const token = getCookie('token');
-      
       let query = '';
       if (dateRange === 'CUSTOM' && customStart && customEnd) {
           query = `?startDate=${new Date(customStart).toISOString()}&endDate=${new Date(customEnd).toISOString()}`;

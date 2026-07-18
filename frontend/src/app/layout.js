@@ -28,6 +28,8 @@ export const metadata = {
   }
 };
 
+import { AuthProvider } from '../context/AuthContext';
+
 export default function RootLayout({ children }) {
   // Global JSON-LD for Organization
   const jsonLd = {
@@ -45,12 +47,14 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <CartProvider>
-          <Header />
-          <main className="main-content">
-            {children}
-          </main>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <main className="main-content">
+              {children}
+            </main>
+          </CartProvider>
+        </AuthProvider>
         <BottomNavigation />
       </body>
     </html>
