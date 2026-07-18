@@ -12,5 +12,6 @@ router.get('/:sessionId', checkoutController.getCheckoutState);
 router.put('/:sessionId/contact', checkoutController.setContact);
 router.put('/:sessionId/address', checkoutController.setAddress);
 router.put('/:sessionId/shipping', checkoutController.setShipping);
+router.put('/:sessionId/coupon', checkoutController.applyCoupon);
 
 module.exports = router;

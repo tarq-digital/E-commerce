@@ -1,5 +1,6 @@
 const CartRepository = require('../repositories/cart.repository');
 const ProductRepository = require('../../catalog/repositories/product.repository');
+const PricingEngineService = require('../../pricing/services/pricing-engine.service');
 
 class CartService {
   
@@ -79,12 +80,27 @@ class CartService {
       await CartRepository.touchCart(cart.id);
     }
 
+    // Phase 13.6 Pricing Engine Integration
+    // For now we don't persist cart.coupon_code in DB, so we rely on what's passed (or null).
+    // The storefront will pass couponCode in a separate checkout API.
+    // We will just calculate auto-promotions for getCart by default unless a coupon is passed.
+    
+    let pricingBreakdown = null;
+    let pricingError = null;
+    
+    try {
+      pricingBreakdown = await PricingEngineService.calculateDiscounts(validatedItems, cartToken === 'COUPON_TEST' ? null : null);
+    } catch (e) {
+      pricingError = e.message;
+    }
+
     return { 
       cart_id: cart.id,
       cart_token: cart.cart_token,
       currency: cart.currency,
       items: validatedItems, 
-      meta: { warnings } 
+      pricing: pricingBreakdown,
+      meta: { warnings, pricing_error: pricingError } 
     };
   }
 
