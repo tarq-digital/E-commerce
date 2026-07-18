@@ -14,10 +14,19 @@ const getInventory = catchAsync(async (req, res) => {
   );
 });
 
+const getInventoryByVariantId = catchAsync(async (req, res) => {
+  const { variantId } = req.params;
+  const warehouseId = req.query.warehouse_id ? parseInt(req.query.warehouse_id) : 1;
+  const result = await InventoryService.getInventoryByVariantId(variantId, warehouseId);
+  sendSuccess(res, httpStatus.OK, "Inventory detail retrieved", result);
+});
+
 const adjustStock = catchAsync(async (req, res) => {
-  const { variantId, quantity, type, reason } = req.body;
+  const { variantId } = req.params;
+  const { warehouseId, quantity, type, reason } = req.body;
   const result = await InventoryService.adjustStock(
     variantId,
+    warehouseId || 1,
     quantity,
     type,
     reason,
@@ -28,5 +37,6 @@ const adjustStock = catchAsync(async (req, res) => {
 
 module.exports = {
   getInventory,
+  getInventoryByVariantId,
   adjustStock,
 };
