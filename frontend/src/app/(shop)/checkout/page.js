@@ -70,12 +70,12 @@ export default function CheckoutPage() {
 
             // Initialize Razorpay
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TEe0UY95f38WAK',
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || data.data.payment.key_id || 'rzp_test_TEe0UY95f38WAK',
                 amount: data.data.payment.amount,
-                currency: 'INR',
+                currency: data.data.payment.currency || 'INR',
                 name: 'Weebster',
                 description: 'Order Payment',
-                order_id: data.data.payment.id, // Razorpay order id
+                order_id: data.data.payment.razorpay_order_id,
                 handler: async function (response) {
                     try {
                         const verifyRes = await fetch(`${apiUrl}/webhooks/razorpay`, {

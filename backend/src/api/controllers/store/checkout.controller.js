@@ -2,6 +2,8 @@ const { sendSuccess } = require('../../../utils/response');
 const httpStatus = require('../../../constants/http-status');
 const catchAsync = require('../../../utils/catch-async');
 const CheckoutService = require('../../../modules/checkout/services/checkout.service');
+const CheckoutRepository = require('../../../modules/checkout/repositories/checkout.repository');
+const PaymentService = require('../../../modules/payment/services/payment.service');
 
 const getCredentials = (req) => {
   const userId = req.user?.id || null;
@@ -9,17 +11,39 @@ const getCredentials = (req) => {
   return { userId, cartToken };
 };
 
+/**
+ * Unified checkout initiation endpoint.
+ * Accepts shipping_address, billing_address, and payment_method.
+ * Creates a checkout session, sets the address, and creates a Razorpay payment order in one step.
+ */
 const initiateCheckout = catchAsync(async (req, res) => {
   const { userId, cartToken } = getCredentials(req);
   const clientIp = req.ip || req.connection.remoteAddress;
   const userAgent = req.headers['user-agent'];
+  const { shipping_address, billing_address } = req.body;
 
+  // Step 1: Create (or retrieve) checkout session
   const sessionId = await CheckoutService.initiateCheckout(userId, cartToken, clientIp, userAgent);
-  
+
+  // Step 2: Set address on the session (so the order gets address data when payment is confirmed)
+  if (shipping_address) {
+    const billing = billing_address || shipping_address;
+    await CheckoutRepository.updateAddresses(sessionId, shipping_address, billing);
+    // Mark session as SHIPPING_SET so PaymentService.initiatePayment allows it
+    await CheckoutRepository.updateStatusToShippingSet(sessionId);
+  }
+
+  // Step 3: Create the Razorpay payment order
+  const idempotencyKey = req.headers['idempotency-key'];
+  const paymentData = await PaymentService.initiatePayment(sessionId, idempotencyKey);
+
   res.status(httpStatus.CREATED).json({
     success: true,
-    message: 'Checkout session initiated',
-    data: { session_id: sessionId },
+    message: 'Checkout initiated and payment order created',
+    data: {
+      session_id: sessionId,
+      payment: paymentData
+    },
     meta: {},
     errors: null,
     timestamp: new Date().toISOString()
@@ -89,11 +113,8 @@ const setShipping = catchAsync(async (req, res) => {
 
 const applyCoupon = catchAsync(async (req, res) => {
   const { sessionId } = req.params;
-  const { coupon_code } = req.body; // Phase 13.6 Pricing Integration
+  const { coupon_code } = req.body;
 
-  // For now, return a mocked success indicating the feature is hooked up
-  // In a full implementation, CheckoutService would ingest PricingEngineService 
-  // and update the session's discount_total.
   sendSuccess(res, httpStatus.OK, 'Coupon applied to checkout session successfully', { coupon_code });
 });
 

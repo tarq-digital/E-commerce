@@ -77,6 +77,13 @@ class CheckoutRepository {
       [subtotal, tax_total, shipping_total, discount_total, grand_total, sessionId]
     );
   }
+
+  async updateStatusToShippingSet(sessionId) {
+    await pool.query(
+      'UPDATE checkout_sessions SET status = "SHIPPING_SET", updated_at = NOW() WHERE id = ?',
+      [sessionId]
+    );
+  }
 }
 
 module.exports = new CheckoutRepository();

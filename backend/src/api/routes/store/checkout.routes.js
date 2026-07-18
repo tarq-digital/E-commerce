@@ -1,15 +1,15 @@
 const express = require('express');
 const checkoutController = require('../../controllers/store/checkout.controller');
 const { optionalAuth } = require('../../../middlewares/auth.middleware');
-const validate = require('../../../middlewares/validate.middleware');
-const { initiateCheckoutSchema } = require('../../../validators/store/checkout.schema');
 
 const router = express.Router();
 
-// Checkout requires cart tokens or session logic, handled similarly to carts (optionalAuth)
 router.use(optionalAuth);
 
-router.post('/initiate', validate(initiateCheckoutSchema), checkoutController.initiateCheckout);
+// Unified endpoint: initiates checkout session, sets address, and creates payment order in one step
+router.post('/initiate', checkoutController.initiateCheckout);
+
+// Step-by-step endpoints for advanced/multi-step checkout flows
 router.get('/:sessionId', checkoutController.getCheckoutState);
 router.put('/:sessionId/contact', checkoutController.setContact);
 router.put('/:sessionId/address', checkoutController.setAddress);

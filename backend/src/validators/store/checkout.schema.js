@@ -1,21 +1,19 @@
-const { z } = require('zod');
+const Joi = require('joi');
 
-const addressSchema = z.object({
-  phone: z.string().min(10, 'Phone is required'),
-  line1: z.string().min(1, 'Address line 1 is required'),
-  line2: z.string().optional(),
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  pincode: z.string().min(1, 'Pincode is required'),
+const addressSchema = Joi.object({
+  phone: Joi.string().min(10).required(),
+  line1: Joi.string().min(1).required(),
+  line2: Joi.string().optional().allow('', null),
+  city: Joi.string().min(1).required(),
+  state: Joi.string().min(1).required(),
+  pincode: Joi.string().min(1).required(),
 });
 
-const initiateCheckoutSchema = z.object({
-  body: z.object({
-    shipping_address: addressSchema,
-    billing_address: addressSchema.optional(),
-    payment_method: z.string().optional(),
-    notes: z.string().optional()
-  })
+const initiateCheckoutSchema = Joi.object({
+  shipping_address: addressSchema.required(),
+  billing_address: addressSchema.optional().allow(null),
+  payment_method: Joi.string().optional().allow('', null),
+  notes: Joi.string().optional().allow('', null)
 });
 
 module.exports = {
