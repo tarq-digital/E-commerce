@@ -1,0 +1,46 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { AdminSidebar } from '../../components/admin/layout/AdminSidebar';
+import { AdminTopbar } from '../../components/admin/layout/AdminTopbar';
+
+export default function AdminLayout({ children }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Layout Persistence Strategy
+  useEffect(() => {
+    setIsMounted(true);
+    const savedState = localStorage.getItem('weebster_admin_sidebar_collapsed');
+    if (savedState !== null) {
+      setIsCollapsed(savedState === 'true');
+    }
+  }, []);
+
+  const toggleSidebar = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem('weebster_admin_sidebar_collapsed', String(newState));
+  };
+
+  // Prevent hydration mismatch on the sidebar class
+  if (!isMounted) return null;
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex font-sans">
+      <AdminSidebar isCollapsed={isCollapsed} />
+      
+      <div 
+        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
+          isCollapsed ? 'ml-20' : 'ml-64'
+        }`}
+      >
+        <AdminTopbar toggleSidebar={toggleSidebar} isCollapsed={isCollapsed} />
+        
+        <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}

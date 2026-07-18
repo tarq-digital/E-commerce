@@ -52,7 +52,6 @@ class CartRepository {
         p.id as product_id,
         p.slug as product_slug,
         p.base_price as dynamic_product_price,
-        p.compare_at_price as dynamic_product_compare,
         p.status as product_status,
         pv.id as variant_id,
         pv.price as dynamic_variant_price,
@@ -62,10 +61,7 @@ class CartRepository {
       FROM cart_items ci
       JOIN products p ON ci.product_id = p.id
       LEFT JOIN product_variants pv ON ci.variant_id = pv.id
-      LEFT JOIN inventory i ON (
-        (ci.variant_id IS NOT NULL AND i.variant_id = ci.variant_id) OR
-        (ci.variant_id IS NULL AND i.product_id = ci.product_id)
-      )
+      LEFT JOIN inventory i ON (ci.variant_id IS NOT NULL AND i.variant_id = ci.variant_id)
       WHERE ci.cart_id = ?
     `;
     const [items] = await pool.query(query, [cartId]);

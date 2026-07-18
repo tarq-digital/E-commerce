@@ -125,7 +125,7 @@ class ProductService {
     await ProductRepository.softDelete(id);
     AuditRepository.logAction(
       req.user.id,
-      "PRODUCT_DELETED",
+      "PRODUCT_ARCHIVED",
       { product_id: id },
       req.ip,
     );

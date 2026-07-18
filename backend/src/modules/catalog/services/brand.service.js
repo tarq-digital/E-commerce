@@ -69,7 +69,7 @@ class BrandService {
     await BrandRepository.softDelete(id);
     AuditRepository.logAction(
       req.user.id,
-      "BRAND_DELETED",
+      "BRAND_ARCHIVED",
       { brand_id: id },
       req.ip,
     );

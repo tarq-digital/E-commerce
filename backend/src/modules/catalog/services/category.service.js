@@ -102,7 +102,7 @@ class CategoryService {
     await CategoryRepository.softDelete(id);
     AuditRepository.logAction(
       req.user.id,
-      "CATEGORY_DELETED",
+      "CATEGORY_ARCHIVED",
       { category_id: id },
       req.ip,
     );
