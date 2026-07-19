@@ -37,10 +37,7 @@ class AuthService {
     const tokenHash = hashToken(plainToken);
 
     // Expires in 24 hours
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
     await AuditRepository.saveVerificationToken(
       newUser.id,
       tokenHash,
@@ -48,7 +45,8 @@ class AuthService {
       expiresAt,
     );
 
-    const verificationUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email?token=${plainToken}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const verificationUrl = `${frontendUrl}/verify-email?token=${plainToken}`;
 
     // Fire and forget welcome + verification email
     EmailService.sendWelcome(newUser).catch(console.error);

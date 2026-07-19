@@ -16,6 +16,9 @@ class AuditRepository {
   // --- Verification / Password Tokens --- //
 
   async saveVerificationToken(userId, tokenHash, type, expiresAt) {
+    // Cleanup expired tokens before inserting new ones to prevent DB bloat
+    await pool.query("DELETE FROM verification_tokens WHERE user_id = ? AND expires_at < CURRENT_TIMESTAMP", [userId]);
+
     await pool.query(
       "INSERT INTO verification_tokens (user_id, token_hash, type, expires_at) VALUES (?, ?, ?, ?)",
       [userId, tokenHash, type, expiresAt],

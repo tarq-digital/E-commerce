@@ -1,19 +1,20 @@
 {
-  "statusCode": 500,
-  "message": "EmailService.sendPasswordReset is not a function",
-  "stack": "TypeError: EmailService.sendPasswordReset is not a function\n    at PasswordService.forgotPassword (C:\\Users\\sumit\\Desktop\\E-commerce\\backend\\src\\services\\password.service.js:36:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async C:\\Users\\sumit\\Desktop\\E-commerce\\backend\\src\\api\\controllers\\auth.controller.js:118:3",
+  "statusCode": 400,
+  "message": "Invalid or expired reset token.",
+  "stack": "Error: Invalid or expired reset token.\n    at PasswordService.resetPassword (C:\\Users\\sumit\\Desktop\\E-commerce\\backend\\src\\services\\password.service.js:49:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async C:\\Users\\sumit\\Desktop\\E-commerce\\backend\\src\\api\\controllers\\auth.controller.js:127:3",
   "body": {
-    "email": "sumitkumar042006@gmail.com"
+    "token": "bfa46d9ec0f1a6749e6cfe0517d51ea151b2526aefbb30c1eced793b41c3d258",
+    "password": "Sumit@123"
   },
   "headers": {
     "host": "127.0.0.1:8000",
     "connection": "keep-alive",
-    "content-length": "38",
-    "sec-ch-ua-platform": "\"Android\"",
-    "user-agent": "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36",
+    "content-length": "99",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
     "sec-ch-ua": "\"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"150\", \"Google Chrome\";v=\"150\"",
     "content-type": "application/json",
-    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-mobile": "?0",
     "accept": "*/*",
     "origin": "http://localhost:3000",
     "sec-fetch-site": "cross-site",

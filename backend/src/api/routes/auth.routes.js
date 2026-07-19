@@ -2,7 +2,7 @@ const express = require("express");
 const authController = require("../controllers/auth.controller");
 const validate = require("../../middlewares/validate.middleware");
 const { requireAuth } = require("../../middlewares/auth.middleware");
-const { authLimiter } = require("../../middlewares/rate-limiter.middleware");
+const { authLimiter, emailLimiter } = require("../../middlewares/rate-limiter.middleware");
 
 const registerSchema = require("../../validators/auth/register.schema");
 const loginSchema = require("../../validators/auth/login.schema");
@@ -26,7 +26,7 @@ router.post("/login", authLimiter, validate(loginSchema), authController.login);
 router.post("/refresh-token", authController.refreshToken);
 router.post(
   "/forgot-password",
-  authLimiter,
+  emailLimiter,
   validate(forgotPasswordSchema),
   authController.forgotPassword,
 );
@@ -36,7 +36,7 @@ router.post(
   validate(resetPasswordSchema),
   authController.resetPassword,
 );
-router.get("/verify-email", authController.verifyEmail);
+router.get("/verify-email", emailLimiter, authController.verifyEmail);
 
 // Protected Routes
 router.use(requireAuth);

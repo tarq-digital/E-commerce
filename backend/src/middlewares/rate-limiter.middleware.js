@@ -30,7 +30,22 @@ const authLimiter = rateLimit({
   },
 });
 
+const emailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // Very strict limit for emails
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(httpStatus.TOO_MANY_REQUESTS).json({
+      success: false,
+      message: "Too many email requests. Please try again later.",
+      error_code: "EMAIL_RATE_LIMIT_EXCEEDED",
+    });
+  },
+});
+
 module.exports = {
   globalLimiter,
   authLimiter,
+  emailLimiter,
 };

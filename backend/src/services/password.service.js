@@ -19,10 +19,7 @@ class PasswordService {
     const tokenHash = hashToken(plainToken);
 
     // Expires in 15 minutes
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000)
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     await AuditRepository.saveVerificationToken(
       user.id,
       tokenHash,
@@ -30,10 +27,11 @@ class PasswordService {
       expiresAt,
     );
 
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/reset-password?token=${plainToken}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const resetUrl = `${frontendUrl}/reset-password?token=${plainToken}`;
 
     // Fire and forget
-    EmailService.sendPasswordReset(user, resetUrl).catch(console.error);
+    EmailService.sendForgotPassword(user, resetUrl).catch(console.error);
     AuditRepository.logAction(user.id, "PASSWORD_RESET_REQUESTED", {}, req.ip);
   }
 

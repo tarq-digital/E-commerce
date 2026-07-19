@@ -12,6 +12,15 @@ process.on("uncaughtException", (err) => {
 let server;
 
 const startServer = async () => {
+  // Production Environment Validation
+  const requiredEnvVars = ['RESEND_API_KEY', 'EMAIL_FROM', 'FRONTEND_URL', 'APP_NAME'];
+  const missingEnvVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
+  
+  if (missingEnvVars.length > 0) {
+    logger.error(`FATAL ERROR: Missing required environment variables: ${missingEnvVars.join(', ')}`);
+    process.exit(1);
+  }
+
   try {
     // Await DB connection verify before accepting HTTP requests
     await pool.getConnection();

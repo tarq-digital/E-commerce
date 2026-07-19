@@ -13,13 +13,18 @@ jest.mock('mysql2/promise', () => ({
   })),
 }));
 
-// Mock Nodemailer
-jest.mock('nodemailer', () => ({
-  createTransport: jest.fn(() => ({
-    sendMail: jest.fn().mockResolvedValue({ messageId: 'mock-id' }),
-    verify: jest.fn().mockResolvedValue(true),
-  })),
-}));
+// Mock Resend
+jest.mock('resend', () => {
+  return {
+    Resend: jest.fn().mockImplementation(() => {
+      return {
+        emails: {
+          send: jest.fn().mockResolvedValue({ id: 'mock-id' }),
+        },
+      };
+    }),
+  };
+});
 
 // Mock Cloudinary
 jest.mock('cloudinary', () => ({
