@@ -8,7 +8,10 @@ class CartRepository {
     let query = `SELECT * FROM carts WHERE status = 'ACTIVE'`;
     let params = [];
     
-    if (userId) {
+    if (userId && cartToken) {
+      query += ` AND (user_id = ? OR cart_token = ?)`;
+      params.push(userId, cartToken);
+    } else if (userId) {
       query += ` AND user_id = ?`;
       params.push(userId);
     } else if (cartToken) {

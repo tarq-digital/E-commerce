@@ -50,13 +50,13 @@ class PaymentService {
     // 4. Update Session status
     await CheckoutRepository.updatePaymentPending(sessionId, 'razorpay', rzpOrder.id);
 
-    // 5. Create Payment Transaction Record (we create a pending order id as placeholder, actual order created on success)
+    // 5. Create Payment Transaction Record
     const transactionId = crypto.randomUUID();
-    const mockOrderId = `pending_ord_${sessionId}`; // Placeholder until payment success converts session to order
     
     await PaymentRepository.createTransaction({
       id: transactionId,
-      order_id: mockOrderId, 
+      session_id: sessionId,
+      order_id: null, 
       razorpay_order_id: rzpOrder.id,
       amount: session.grand_total,
       currency: session.currency,
@@ -93,8 +93,7 @@ class PaymentService {
     }
 
     // Payment is valid! Convert Session to Order.
-    const mockOrderId = transaction.order_id;
-    const sessionId = mockOrderId.replace('pending_ord_', '');
+    const sessionId = transaction.session_id;
     
     let realOrderId;
     try {

@@ -9,7 +9,6 @@ const crypto = require('crypto');
 class CheckoutService {
   
   async initiateCheckout(userId, cartToken, clientIp, userAgent) {
-    // 1. Fetch Cart (this also validates inventory and removes out-of-stock items)
     const cart = await CartService.getCart(userId, cartToken);
     
     if (cart.items.length === 0) {

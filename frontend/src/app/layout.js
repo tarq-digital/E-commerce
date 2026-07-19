@@ -1,4 +1,5 @@
 import { Inter, Outfit } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { CartProvider } from '../context/CartContext';
 import { Header } from '../components/layout/Header/Header';
@@ -56,6 +57,10 @@ export default function RootLayout({ children }) {
           </CartProvider>
         </AuthProvider>
         <BottomNavigation />
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

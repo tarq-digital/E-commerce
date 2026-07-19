@@ -39,10 +39,11 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.1",
-    "nodemailer": "^6.9.9",
     "razorpay": "^2.9.2",
+    "resend": "^3.5.0",
     "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "winston-daily-rotate-file": "^5.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
@@ -52,6 +53,8 @@
     "supertest": "^6.3.4"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ]
   }
 }

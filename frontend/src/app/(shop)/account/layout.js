@@ -2,13 +2,20 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
 import { Package, User, MapPin, Heart, LogOut } from 'lucide-react';
 
 export default function AccountLayout({ children }) {
     const pathname = usePathname();
-    const { logout, user } = useAuth();
+    const router = useRouter();
+    const { logout, user, loading } = useAuth();
+    
+    React.useEffect(() => {
+        if (!loading && !user) {
+            router.push('/login');
+        }
+    }, [loading, user, router]);
 
     const links = [
         { href: '/account', label: 'Profile', icon: User },
@@ -17,6 +24,7 @@ export default function AccountLayout({ children }) {
         { href: '/wishlist', label: 'Wishlist', icon: Heart }
     ];
 
+    if (loading) return <div className="p-8 text-center">Loading...</div>;
     if (!user) return null;
 
     return (

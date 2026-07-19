@@ -30,10 +30,10 @@ export default function RegisterPage() {
             const data = await res.json();
             
             if (res.ok && data.success) {
-                login(data.data.user, data.data.token);
-                router.push('/account');
+                router.push('/login?registered=true');
             } else {
-                setError(data.error || 'Failed to register');
+                const errorMessage = data.details?.[0]?.message || data.message || data.error || 'Registration failed';
+                setError(errorMessage);
             }
         } catch (err) {
             setError('Network error. Please try again.');

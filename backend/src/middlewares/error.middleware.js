@@ -35,6 +35,10 @@ const globalErrorHandler = (err, req, res, next) => {
     }
   }
 
+  // DEBUG OUTPUT TO FILE
+  const fs = require('fs');
+  fs.writeFileSync('debug_error.json', JSON.stringify({ statusCode, message, stack: err.stack, body: req.body, headers: req.headers }, null, 2));
+
   res.locals.errorMessage = message;
 
   const response = {

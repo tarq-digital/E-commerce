@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { Heart, ShoppingBag, Truck, ShieldCheck, Minus, Plus } from 'lucide-react';
 import { Button } from '../../ui/Button/Button';
 import { VariantSelector } from '../VariantSelector/VariantSelector';
 import { StickyAddToCart } from '../StickyAddToCart/StickyAddToCart';
 import { useCartDispatch, useCartState } from '../../../context/CartContext';
+import { useAuth } from '../../../context/AuthContext';
 import styles from './ProductInteractive.module.css';
 
 export const ProductInteractive = ({ product }) => {
   const { variants = [], base_price, compare_at_price } = product;
+  const router = useRouter();
+  const { token, user } = useAuth();
 
   // State
   const [selectedVariant, setSelectedVariant] = useState(variants[0] || null);
@@ -39,6 +43,46 @@ export const ProductInteractive = ({ product }) => {
   const handleVariantSelect = (variant) => {
     setSelectedVariant(variant);
     setQuantity(1); // Reset quantity on variant change
+  };
+
+  const handleBuyNow = async () => {
+    const success = await addToCart(product, selectedVariant, quantity);
+    if (success) {
+      router.push('/checkout');
+    }
+  };
+
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const handleWishlist = async () => {
+    if (!user || !token) {
+        alert("Please log in to add to wishlist");
+        return;
+    }
+    
+    const newStatus = !isWishlisted;
+    setIsWishlisted(newStatus);
+
+    try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+        if (newStatus) {
+            await fetch(`${apiUrl}/store/wishlist`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}` 
+                },
+                body: JSON.stringify({ product_id: product.id })
+            });
+        } else {
+            await fetch(`${apiUrl}/store/wishlist/${product.id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        setIsWishlisted(!newStatus);
+    }
   };
 
   return (
@@ -115,9 +159,10 @@ export const ProductInteractive = ({ product }) => {
             variant="outline" 
             size="lg"
             className={styles.wishlistBtn}
-            aria-label="Add to Wishlist"
+            aria-label={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+            onClick={handleWishlist}
           >
-            <Heart size={24} />
+            <Heart size={24} fill={isWishlisted ? "currentColor" : "none"} />
           </Button>
         </div>
         
@@ -128,6 +173,7 @@ export const ProductInteractive = ({ product }) => {
           fullWidth
           disabled={isOutOfStock}
           className={styles.buyNowBtn}
+          onClick={handleBuyNow}
         >
           Buy It Now
         </Button>

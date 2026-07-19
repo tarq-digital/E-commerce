@@ -35,7 +35,9 @@ export function AuthProvider({ children }) {
         localStorage.setItem('token', authToken);
         
         // Also set a cookie so Server Components can read it if needed
-        document.cookie = `token=${authToken}; path=/; max-age=86400; SameSite=Lax`;
+        document.cookie = `access_token=${authToken}; path=/; max-age=86400; SameSite=Lax`;
+        
+        console.log("Stored Token", localStorage.getItem("token"));
     };
 
     const logout = () => {
@@ -43,7 +45,7 @@ export function AuthProvider({ children }) {
         setToken(null);
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         router.push('/login');
     };
 

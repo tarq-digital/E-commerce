@@ -1,7 +1,7 @@
 const UserRepository = require("../database/repositories/user.repository");
 const AuditRepository = require("../database/repositories/audit.repository");
 const SessionService = require("./session.service");
-const EmailService = require("./email.service");
+const EmailService = require("./email/EmailService");
 const { generateVerificationToken, hashToken } = require("../utils/jwt");
 const { hashPassword, comparePassword } = require("../utils/crypto");
 const ApiError = require("../utils/api-error");

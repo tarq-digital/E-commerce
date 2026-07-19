@@ -101,7 +101,4 @@ INSERT IGNORE INTO permissions (name, description) VALUES
 INSERT IGNORE INTO role_permissions (role_id, permission_id) 
 SELECT r.id, p.id FROM roles r, permissions p WHERE r.name = 'ADMIN';
 
--- Seed Admin User (Password is 'Admin@123')
-INSERT IGNORE INTO users (first_name, last_name, email, password_hash, role_id, is_email_verified)
-SELECT 'System', 'Admin', 'admin@weebster.in', '$2b$12$Nq9T1.Hk8yF1XGq1oA.3uO5A20lWqJ6h9U6sH1QzHh6lU6sH1QzHh', r.id, TRUE
-FROM roles r WHERE r.name = 'ADMIN';
+

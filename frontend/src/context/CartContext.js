@@ -88,15 +88,20 @@ export function CartProvider({ children }) {
       ...options.headers
     };
     
-    // In a real app with next-auth, you'd get the Bearer token here.
-    // For now we assume we use guest cart token if it exists.
-    let token = state.cartToken;
-    if (!token && typeof window !== 'undefined') {
-      token = localStorage.getItem('guest_cart_token');
+    if (typeof window !== 'undefined') {
+      const authToken = localStorage.getItem("token");
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
     }
-    if (token) {
-      headers['x-guest-cart-token'] = token;
+
+    const guestToken = state.cartToken || (typeof window !== 'undefined' ? localStorage.getItem("guest_cart_token") : null);
+    if (guestToken) {
+      headers["x-guest-cart-token"] = guestToken;
     }
+    
+    console.log("Authorization Header", headers.Authorization);
+    console.log("Guest Token", headers["x-guest-cart-token"]);
 
     const response = await fetch(`${API_URL}${url}`, {
       ...options,
@@ -148,6 +153,11 @@ export function CartProvider({ children }) {
     return {
       toggleDrawer: (isOpen) => dispatch({ type: 'TOGGLE_DRAWER', payload: isOpen }),
       
+      clearCart: () => {
+        if (typeof window !== 'undefined') localStorage.removeItem('guest_cart_token');
+        dispatch({ type: 'CLEAR_CART' });
+      },
+      
       addToCart: async (product, variant, quantity) => {
         dispatch({ type: 'OPTIMISTIC_ADD' });
         dispatch({ type: 'TOGGLE_DRAWER', payload: true });
@@ -164,10 +174,12 @@ export function CartProvider({ children }) {
             body: JSON.stringify(payload)
           });
           dispatch({ type: 'INIT_CART', payload: res.data.cart });
+          return true;
         } catch (error) {
           console.error("Add to cart failed:", error);
           dispatch({ type: 'SET_ERROR', payload: error.message });
           alert(`Failed to add to cart: ${error.message}`); // Fallback toast
+          return false;
         }
       },
       
@@ -208,14 +220,21 @@ export function CartProvider({ children }) {
         }
       },
       
-      mergeGuestCart: async (guestToken) => {
+      mergeGuestCart: async (guestToken, authToken) => {
         try {
+          console.log("Merge Request Sent");
           dispatch({ type: 'SET_STATUS', payload: { isSyncing: true } });
           // Note: Needs strict Bearer auth token for the actual user in headers here
           const res = await fetchWithToken('/store/cart/merge', {
             method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+              'x-guest-cart-token': guestToken
+            },
             body: JSON.stringify({ guest_cart_token: guestToken })
           });
+          console.log("Merge Response", res);
+          // Wait for successful response. Only then remove guest_cart_token.
           if (typeof window !== 'undefined') localStorage.removeItem('guest_cart_token');
           dispatch({ type: 'INIT_CART', payload: res.data.cart });
         } catch (error) {

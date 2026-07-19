@@ -4,11 +4,11 @@ class PaymentRepository {
   async createTransaction(data) {
     const query = `
       INSERT INTO payment_transactions (
-        id, order_id, gateway, razorpay_order_id, amount, currency, status, idempotency_key
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        id, session_id, order_id, gateway, razorpay_order_id, amount, currency, status, idempotency_key
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const params = [
-      data.id, data.order_id, data.gateway || 'razorpay', data.razorpay_order_id,
+      data.id, data.session_id, data.order_id || null, data.gateway || 'razorpay', data.razorpay_order_id,
       data.amount, data.currency, data.status || 'INITIATED', data.idempotency_key
     ];
     await pool.query(query, params);

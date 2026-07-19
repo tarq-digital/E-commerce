@@ -6,7 +6,7 @@ async function getOrders(searchParams) {
   const query = new URLSearchParams(searchParams).toString();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
   
-  const token = cookies().get('token')?.value;
+  const token = cookies().get('access_token')?.value;
   if (!token) return null;
 
   try {

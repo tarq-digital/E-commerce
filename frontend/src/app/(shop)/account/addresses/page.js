@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../../../../context/AuthContext';
-import { Button } from '../../../../../components/ui/Button/Button';
+import { useAuth } from '../../../../context/AuthContext';
+import { Button } from '../../../../components/ui/Button/Button';
 
 export default function AddressesPage() {
     const { token } = useAuth();

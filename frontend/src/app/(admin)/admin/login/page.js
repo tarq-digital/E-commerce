@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
                     setError('Unauthorized. Admin access required.');
                     return;
                 }
-                login(data.data.user, data.data.token);
+                login(data.data.user, data.data.accessToken);
                 router.push('/admin');
             } else {
                 setError(data.error || 'Failed to login');

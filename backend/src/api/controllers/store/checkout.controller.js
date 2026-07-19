@@ -18,12 +18,23 @@ const getCredentials = (req) => {
  */
 const initiateCheckout = catchAsync(async (req, res) => {
   const { userId, cartToken } = getCredentials(req);
+  console.log("=== CHECKOUT INITIATE DEBUG ===");
+  console.log("req.headers.authorization:", req.headers.authorization);
+  console.log("req.user:", req.user);
+  console.log("getCredentials -> userId:", userId, "cartToken:", cartToken);
+
   const clientIp = req.ip || req.connection.remoteAddress;
   const userAgent = req.headers['user-agent'];
   const { shipping_address, billing_address } = req.body;
 
   // Step 1: Create (or retrieve) checkout session
-  const sessionId = await CheckoutService.initiateCheckout(userId, cartToken, clientIp, userAgent);
+  let sessionId;
+  try {
+    sessionId = await CheckoutService.initiateCheckout(userId, cartToken, clientIp, userAgent);
+  } catch (e) {
+    console.error("CheckoutService.initiateCheckout threw:", e.message);
+    throw e;
+  }
 
   // Step 2: Set address on the session (so the order gets address data when payment is confirmed)
   if (shipping_address) {

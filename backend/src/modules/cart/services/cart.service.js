@@ -13,6 +13,12 @@ class CartService {
     }
 
     const items = await CartRepository.getCartItems(cart.id);
+    
+    console.log("User ID", userId);
+    console.log("Guest Token", cartToken);
+    console.log("Cart", cart);
+    console.log("Items from DB:", items);
+
     const warnings = [];
     let requiresDbUpdate = false;
 
@@ -128,7 +134,9 @@ class CartService {
       // Simplified for products without variants
       // In a real app, you'd fetch the base product inventory
       // We assume fullProduct.variants has the default if single
-      availableStock = fullProduct.variants?.[0]?.available_stock || 100; // fallback for now
+      targetVariant = fullProduct.variants?.[0];
+      availableStock = targetVariant?.available_stock || 100; // fallback for now
+      variant_id = targetVariant?.id || null;
     }
 
     if (quantity > availableStock) {
